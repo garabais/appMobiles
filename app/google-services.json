@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "553125066446",
+    "project_id": "dogetoing",
+    "storage_bucket": "dogetoing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:553125066446:android:5b1330e209cdfe5aa5029f",
+        "android_client_info": {
+          "package_name": "com.example.proyectomobiles"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "553125066446-70ggqmq8gkjb5kdl8e4i08uikchs4mkt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5Gxx_o8ZAqLTQC-kVdhZguVLUbxFLWsI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "553125066446-70ggqmq8gkjb5kdl8e4i08uikchs4mkt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

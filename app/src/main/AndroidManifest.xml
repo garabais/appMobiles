@@ -21,7 +21,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".LandingPageActivity" />
         <activity android:name=".MembersActivity" />
-        
+
 
         <meta-data
             android:name="preloaded_fonts"
