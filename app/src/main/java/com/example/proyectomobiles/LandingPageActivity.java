@@ -36,7 +36,7 @@ public class LandingPageActivity extends AppCompatActivity {
 
     public void registrarElemento(View v){
         Intent i = new Intent(this, ElementNew.class);
-        startActivityForResult(i,23);
+        startActivity(i);
     }
 
     @Override
