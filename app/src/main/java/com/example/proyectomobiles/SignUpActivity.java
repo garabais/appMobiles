@@ -28,6 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
         user = findViewById(R.id.username);
         password = findViewById(R.id.password);
         passwordConfirmation = findViewById(R.id.passwordConfirmation);
+        mAuth = FirebaseAuth.getInstance();
     }
 
     public void registrar(View v){
@@ -44,8 +45,9 @@ public class SignUpActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     Toast.makeText(getApplicationContext(),"Registro exitoso!",Toast.LENGTH_SHORT).show();
-                                    Intent i = new Intent(getApplicationContext(),LandingPageActivity.class);
+                                    Intent i = new Intent(v.getContext(),LandingPageActivity.class);
                                     startActivity(i);
+                                    finish();
                                 } else{
                                     Toast.makeText(getApplicationContext(),"Registro fallido!",Toast.LENGTH_SHORT).show();
                                 }
