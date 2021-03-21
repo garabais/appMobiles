@@ -44,29 +44,94 @@
         android:id="@+id/puntuacionElemento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="3dp"
+        android:layout_marginTop="28dp"
         android:backgroundTint="#FFFFFF"
         android:ems="10"
         android:hint="Puntuacion"
         android:inputType="number"
         android:textColorHint="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="@+id/nombreElemento"
+        app:layout_constraintStart_toStartOf="@+id/nombreElemento"
         app:layout_constraintTop_toBottomOf="@+id/nombreElemento" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="285dp"
+        android:layout_height="240dp"
+        android:layout_marginTop="120dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/radio_pirates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Canción"
+            android:textColor="#FFFFFF" />
+
+        <RadioButton
+            android:id="@+id/radio_ninjas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Película"
+            android:textColor="#FFFFFF" />
+
+        <RadioButton
+            android:id="@+id/radio_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Videojuego"
+            android:textColor="#FFFFFF" />
+
+        <RadioButton
+            android:id="@+id/radio_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Serie"
+            android:textColor="#FFFFFF" />
+
+        <RadioButton
+            android:id="@+id/radio_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Libro"
+            android:textColor="#FFFFFF" />
+    </RadioGroup>
 
     <EditText
         android:id="@+id/nombreElemento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="273dp"
-        android:layout_marginBottom="272dp"
+        android:layout_marginTop="14dp"
         android:backgroundTint="#FFFFFF"
         android:ems="10"
         android:hint="Nombre"
         android:inputType="textPersonName"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/button6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginBottom="13dp"
+        android:text="¿Qué tipo de elemento deseas añadir a tu lista?"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
