@@ -11,8 +11,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import android.view.View;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class LandingPageActivity extends AppCompatActivity {
 
@@ -36,6 +34,11 @@ public class LandingPageActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void registrarElemento(View v){
+        Intent i = new Intent(this, ElementNew.class);
+        startActivityForResult(i,23);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -55,6 +58,4 @@ public class LandingPageActivity extends AppCompatActivity {
 
 
     }
-
-
 }
