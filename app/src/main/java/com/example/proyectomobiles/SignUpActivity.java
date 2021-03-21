@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,6 +14,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -32,32 +35,48 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void registrar(View v){
-        if(email.getText().toString().equals("") || user.getText().toString().equals("") || password.getText().toString().equals("")
-        || passwordConfirmation.getText().toString().equals("")){
+        if(email.getText().toString().isEmpty() || user.getText().toString().isEmpty() || password.getText().toString().isEmpty()
+        || passwordConfirmation.getText().toString().isEmpty()){
             Toast.makeText(this, "Favor de llenar todos los campos!",Toast.LENGTH_SHORT).show();
-        } else{
-            String passwordString = password.getText().toString();
-            String passwordConfirmationString = passwordConfirmation.getText().toString();
-            if(passwordConfirmationString.equals(passwordString)){
-                mAuth.createUserWithEmailAndPassword(email.getText().toString(), passwordString)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful()){
-                                    Toast.makeText(getApplicationContext(),"Registro exitoso!",Toast.LENGTH_SHORT).show();
-                                    Intent i = new Intent(v.getContext(),LandingPageActivity.class);
-                                    startActivity(i);
-                                    finish();
-                                } else{
-                                    Toast.makeText(getApplicationContext(),"Registro fallido!",Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-            } else{
-                Toast.makeText(this, "Las contraseñas no coinciden!", Toast.LENGTH_SHORT).show();
-            }
-        }
+        } else if(!password.getText().toString().equals(passwordConfirmation.getText().toString())){
+            Toast.makeText(this, "Las contraseñas no coinciden!", Toast.LENGTH_SHORT).show();
+        } else {
+            mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                // Sign in is successful
+                                FirebaseUser usr = FirebaseAuth.getInstance().getCurrentUser();
 
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(user.getText().toString()).build();
+
+                                usr.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d("USER", "User profile updated.");
+                                                    Toast.makeText(getApplicationContext(),"Registro exitoso!",Toast.LENGTH_SHORT).show();
+                                                    Intent i = new Intent(v.getContext(),LandingPageActivity.class);
+                                                    startActivity(i);
+                                                    finish();
+                                                } else {
+                                                    // TODO: failed to set the display name
+                                                }
+                                            }
+                                        });
+
+                            } else{
+                                Toast.makeText(getApplicationContext(),"Registro fallido!",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+
+        }
     }
 
 }
+
