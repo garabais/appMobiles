@@ -24,4 +24,9 @@ public class LandingPageActivity extends AppCompatActivity {
         Intent i = new Intent(this, StartActivity.class);
         startActivity(i);
     }
+
+    public void registrarElemento(View v){
+        Intent i = new Intent(this, ElementNew.class);
+        startActivityForResult(i,23);
+    }
 }
