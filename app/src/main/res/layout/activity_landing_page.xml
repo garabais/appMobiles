@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LandingPageActivity"
-    android:background="@color/bg">
+    android:background="@color/bg"
+    tools:context=".LandingPageActivity">
 
     <ImageView
         android:id="@+id/imageView"
@@ -194,14 +194,16 @@
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="96dp"
-        android:layout_height="98dp"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="7dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView7"
         app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
-        app:layout_constraintTop_toBottomOf="@+id/user14"
+        app:layout_constraintTop_toBottomOf="@+id/logout"
         app:srcCompat="@drawable/analisis_fire_emblem_three_houses" />
 
     <ImageView
@@ -213,5 +215,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user14"
         app:srcCompat="@drawable/hades" />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="546dp"
+        android:onClick="logout"
+        android:text="Cerrar Sesión"
+        app:layout_constraintBottom_toTopOf="@+id/imageView6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
