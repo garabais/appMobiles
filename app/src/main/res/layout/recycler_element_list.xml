@@ -12,13 +12,15 @@
         android:id="@+id/element_name"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:textColor="#FFFFFF" />
 
     <TextView
         android:id="@+id/element_score"
         android:layout_width="32dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textAlignment="viewStart" />
+        android:textAlignment="viewStart"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>
