@@ -18,6 +18,8 @@ public class LandingPageActivity extends AppCompatActivity {
     private TextView userTV;
 
     private String username;
+    private String uid;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class LandingPageActivity extends AppCompatActivity {
 
     public void registrarElemento(View v){
         Intent i = new Intent(this, ElementNew.class);
+        i.putExtra("UID", uid);
         startActivity(i);
     }
 
@@ -54,6 +57,7 @@ public class LandingPageActivity extends AppCompatActivity {
 
            username = user.getDisplayName();
            userTV.setText(username);
+           uid = user.getUid();
         }
 
 
