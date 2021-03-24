@@ -70,49 +70,46 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/elementsList"
         android:layout_width="318dp"
-        android:layout_height="258dp"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/button5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCategoria"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
     <Spinner
         android:id="@+id/spinnerCategoria"
         android:layout_width="319dp"
         android:layout_height="28dp"
-        android:layout_marginTop="40dp"
-        android:background="#FFFEFE"
-        android:backgroundTint="#FFFFFF"
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:backgroundTint="#2D82B7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user" />
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
         android:text="Tipo de Registro: "
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerCategoria"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user"
-        app:layout_constraintVertical_bias="0.523" />
+        app:layout_constraintTop_toBottomOf="@+id/user" />
 
     <TextView
         android:id="@+id/textView15"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
         android:text="Tus registros:"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/elementsList"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCategoria"
-        app:layout_constraintVertical_bias="0.472" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategoria" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
