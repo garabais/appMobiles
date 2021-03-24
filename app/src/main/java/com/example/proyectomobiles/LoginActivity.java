@@ -30,24 +30,29 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
-
+    
 
 
     public void Login(View v){
-        mAuth.signInWithEmailAndPassword(email.getText().toString(),contraseña.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(getApplicationContext(),"Sesión iniciada!",Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(v.getContext(),LandingPageActivity.class);
-                            startActivity(i);
-                            finish();
-                        } else{
-                            Toast.makeText(getApplicationContext(),"Log In fallido!",Toast.LENGTH_SHORT).show();
+        if(email.getText().toString().isEmpty() || contraseña.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(),"Favor de llenar todos los campos!",Toast.LENGTH_SHORT).show();
+        } else{
+            mAuth.signInWithEmailAndPassword(email.getText().toString(),contraseña.getText().toString())
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(getApplicationContext(),"Sesión iniciada!",Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(v.getContext(),LandingPageActivity.class);
+                                startActivity(i);
+                                finish();
+                            } else{
+                                Toast.makeText(getApplicationContext(),"Log In fallido!",Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+        }
+
     }
 
     public void sendToRegistro(View v){
