@@ -22,6 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ElementNewActivity extends AppCompatActivity {
 
+    public static String E_NAME = "E_NAME", E_SCORE = "E_SCORE", E_CAT = "E_CAT";
+
     private EditText nombreElemento;
     private Spinner spinner;
     private Integer[] valores = {0,1,2,3,4,5,6,7,8,9,10};
@@ -96,7 +98,9 @@ public class ElementNewActivity extends AppCompatActivity {
                     break;
             }
 
-            mDatabase.child("users").child(uid).child(categoria).child(nombreElemento.getText().toString().toLowerCase()).child("score").setValue(spinner.getSelectedItem().toString());
+            String eName = nombreElemento.getText().toString().toLowerCase();
+            String eScore = spinner.getSelectedItem().toString();
+            mDatabase.child("users").child(uid).child(categoria).child(eName).child("score").setValue(eScore);
 //            DatabaseReference db = mDatabase.child("users").child(uid).child(categoria).push();
 //            db.child("name").setValue(nombreElemento.getText().toString().toLowerCase());
 //            db.child("score").setValue(spinner.getSelectedItem().toString());
@@ -104,6 +108,9 @@ public class ElementNewActivity extends AppCompatActivity {
             Toast.makeText(this, "Success", Toast.LENGTH_SHORT);
             Intent i = new Intent();
             setResult(Activity.RESULT_OK,i);
+            i.putExtra(E_NAME, eName);
+            i.putExtra(E_SCORE, eScore);
+            i.putExtra(E_CAT, categoria);
             finish();
         }
 

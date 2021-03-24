@@ -158,7 +158,12 @@ public class LandingPageActivity extends AppCompatActivity {
         //Log.d("refreshList", "onActivityResult: " + requestCode + " " + resultCode);
         if (resultCode == Activity.RESULT_OK && requestCode == ADD_ELEMENT) {
             //Log.d("refreshList", "onActivityResult: add");
-            this.updateLists();
+            if (currCategory.toLowerCase().equals(data.getStringExtra(ElementNewActivity.E_CAT).toLowerCase())){
+                names.add(0,  data.getStringExtra(ElementNewActivity.E_NAME).toUpperCase());
+                scores.add(0,"" + data.getStringExtra(ElementNewActivity.E_SCORE).toUpperCase());
+                rvAdapter.notifyItemInserted(0);
+            }
+            //this.updateLists();
         }
     }
 
