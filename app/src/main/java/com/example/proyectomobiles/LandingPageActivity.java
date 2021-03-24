@@ -1,10 +1,12 @@
 package com.example.proyectomobiles;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +31,7 @@ import java.util.List;
 
 public class LandingPageActivity extends AppCompatActivity {
 
+    private static int ADD_ELEMENT = 1;
     private FirebaseAuth mAuth;
     private TextView userTV;
 
@@ -42,6 +45,7 @@ public class LandingPageActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
 
     private List<String> names, scores;
+
 
 
     @Override
@@ -93,13 +97,13 @@ public class LandingPageActivity extends AppCompatActivity {
     public void logout(View v){
         mAuth.signOut();
         Intent i = new Intent(this, StartActivity.class);
-        startActivity(i);
+        startActivityForResult(i, ADD_ELEMENT);
     }
 
     public void registrarElemento(View v){
         Intent i = new Intent(this, ElementNewActivity.class);
         i.putExtra("UID", uid);
-        startActivity(i);
+        startActivityForResult(i, ADD_ELEMENT);
     }
 
 
@@ -138,39 +142,52 @@ public class LandingPageActivity extends AppCompatActivity {
                 return;
             }
 
-            scores.clear();
-            names.clear();
-            rvAdapter.notifyDataSetChanged();
-
             currCategory = c;
 
-            DatabaseReference db = mDatabase.child("users").child(uid).child(currCategory);
-            db.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    if (!task.isSuccessful()) {
-                        Log.e("firebase", "Error getting data", task.getException());
-                    }
-                    else {
-                        Log.d("firebase", String.valueOf(task.getResult().getValue()));
+            this.updateLists();
 
-                        for (DataSnapshot child: task.getResult().getChildren()) {
-                            Log.d("firebase", String.valueOf(child.getValue()));
-                            Log.d("firebase", String.valueOf(child.getKey()));
-                            scores.add(0, String.valueOf(child.child("score").getValue()));
-                            names.add(0, String.valueOf(child.getKey()).toUpperCase());
-                            rvAdapter.notifyItemInserted(0);
-                        }
-
-
-                    }
-                }
-            });
         }  else {
             return;
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //Log.d("refreshList", "onActivityResult: " + requestCode + " " + resultCode);
+        if (resultCode == Activity.RESULT_OK && requestCode == ADD_ELEMENT) {
+            //Log.d("refreshList", "onActivityResult: add");
+            this.updateLists();
+        }
+    }
+
+    private void updateLists(){
+        scores.clear();
+        names.clear();
+        rvAdapter.notifyDataSetChanged();
+
+        DatabaseReference db = mDatabase.child("users").child(uid).child(currCategory);
+        db.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+
+                    for (DataSnapshot child: task.getResult().getChildren()) {
+                        Log.d("firebase", String.valueOf(child.getValue()));
+                        Log.d("firebase", String.valueOf(child.getKey()));
+                        scores.add(0, String.valueOf(child.child("score").getValue()));
+                        names.add(0, String.valueOf(child.getKey()).toUpperCase());
+                        rvAdapter.notifyItemInserted(0);
+                    }
 
 
+                }
+            }
+        });
     }
 }
