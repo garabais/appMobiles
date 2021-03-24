@@ -53,6 +53,7 @@ public class LandingPageActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         elements = findViewById(R.id.elementsList);
         spinner = findViewById(R.id.spinnerCategoria);
+        currCategory = "";
 
         String[] categorias = {"Pelicula", "Juego", "Serie"};
 
@@ -119,8 +120,11 @@ public class LandingPageActivity extends AppCompatActivity {
            username = user.getDisplayName();
            userTV.setText(username);
            uid = user.getUid();
-           currCategory = "";
-           this.updateCategory("Pelicula");
+
+           if (currCategory.isEmpty()){
+               this.updateCategory("Pelicula");
+           }
+
         }
 
 
@@ -154,7 +158,7 @@ public class LandingPageActivity extends AppCompatActivity {
                             Log.d("firebase", String.valueOf(child.getValue()));
                             Log.d("firebase", String.valueOf(child.getKey()));
                             scores.add(0, String.valueOf(child.child("score").getValue()));
-                            names.add(0, String.valueOf(child.getKey()));
+                            names.add(0, String.valueOf(child.getKey()).toUpperCase());
                             rvAdapter.notifyItemInserted(0);
                         }
 
