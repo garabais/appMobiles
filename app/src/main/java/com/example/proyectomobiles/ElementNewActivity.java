@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class ElementNew extends AppCompatActivity {
+public class ElementNewActivity extends AppCompatActivity {
 
     private EditText nombreElemento;
     private Spinner spinner;
@@ -97,6 +97,11 @@ public class ElementNew extends AppCompatActivity {
             }
 
             mDatabase.child("users").child(uid).child(categoria).child(nombreElemento.getText().toString().toLowerCase()).child("score").setValue(spinner.getSelectedItem().toString());
+//            DatabaseReference db = mDatabase.child("users").child(uid).child(categoria).push();
+//            db.child("name").setValue(nombreElemento.getText().toString().toLowerCase());
+//            db.child("score").setValue(spinner.getSelectedItem().toString());
+            limpiarFormato(v);
+            Toast.makeText(this, "Success", Toast.LENGTH_SHORT);
         }
 
     }
