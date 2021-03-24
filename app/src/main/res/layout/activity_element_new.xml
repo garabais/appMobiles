@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="9dp"
+        android:onClick="guardar"
         android:text="Guardar Elemento"
         app:layout_constraintBaseline_toBaselineOf="@+id/button7"
         app:layout_constraintEnd_toStartOf="@+id/button7"
@@ -41,9 +42,9 @@
         app:layout_constraintStart_toEndOf="@+id/button4" />
 
     <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="285dp"
-        android:layout_height="240dp"
+        android:id="@+id/opcionesElemento"
+        android:layout_width="291dp"
+        android:layout_height="163dp"
         android:layout_marginTop="120dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,15 +52,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
-            android:id="@+id/radio_pirates"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
-            android:text="Canción"
-            android:textColor="#FFFFFF" />
-
-        <RadioButton
-            android:id="@+id/radio_ninjas"
+            android:id="@+id/radioPeli"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"
@@ -67,7 +60,7 @@
             android:textColor="#FFFFFF" />
 
         <RadioButton
-            android:id="@+id/radio_3"
+            android:id="@+id/radioJuego"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"
@@ -75,20 +68,13 @@
             android:textColor="#FFFFFF" />
 
         <RadioButton
-            android:id="@+id/radio_4"
+            android:id="@+id/radioSerie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"
             android:text="Serie"
             android:textColor="#FFFFFF" />
 
-        <RadioButton
-            android:id="@+id/radio_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onRadioButtonClicked"
-            android:text="Libro"
-            android:textColor="#FFFFFF" />
     </RadioGroup>
 
     <EditText
@@ -104,7 +90,7 @@
         android:textColorHint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/opcionesElemento" />
 
     <TextView
         android:id="@+id/textView11"
@@ -118,7 +104,7 @@
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+        app:layout_constraintBottom_toTopOf="@+id/opcionesElemento"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -135,7 +121,7 @@
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+        app:layout_constraintBottom_toTopOf="@+id/opcionesElemento"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
