@@ -102,6 +102,9 @@ public class ElementNewActivity extends AppCompatActivity {
 //            db.child("score").setValue(spinner.getSelectedItem().toString());
             limpiarFormato(v);
             Toast.makeText(this, "Success", Toast.LENGTH_SHORT);
+            Intent i = new Intent();
+            setResult(Activity.RESULT_OK,i);
+            finish();
         }
 
     }
