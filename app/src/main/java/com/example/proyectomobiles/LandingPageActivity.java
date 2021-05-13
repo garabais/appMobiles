@@ -31,7 +31,7 @@ import java.util.List;
 
 public class LandingPageActivity extends AppCompatActivity {
 
-    private static int ADD_ELEMENT = 1;
+    private static final int ADD_ELEMENT = 1;
     private FirebaseAuth mAuth;
     private TextView userTV;
 
@@ -122,7 +122,7 @@ public class LandingPageActivity extends AppCompatActivity {
             Log.d("USER", "email: " + user.getEmail());
 
            username = user.getDisplayName();
-           userTV.setText(username);
+           //userTV.setText(username);
            uid = user.getUid();
 
            if (currCategory.isEmpty()){
