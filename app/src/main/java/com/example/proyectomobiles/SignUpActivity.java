@@ -58,7 +58,7 @@ public class SignUpActivity extends AppCompatActivity implements Handler.Callbac
         } else if(!password.getText().toString().equals(passwordConfirmation.getText().toString())){
             Toast.makeText(this, "Las contraseñas no coinciden!", Toast.LENGTH_SHORT).show();
         } else {
-            //v.setEnabled(false);
+			v.setEnabled(false);
 
             mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
