@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,16 +26,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import android.view.View;
+import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class LandingPageActivity extends AppCompatActivity {
+public class LandingPageActivity extends AppCompatActivity implements Handler.Callback {
 
     private static final int ADD_ELEMENT = 1;
     private FirebaseAuth mAuth;
     private TextView userTV;
+
+    Handler handler;
 
     private String username;
     private String uid;
@@ -57,6 +66,7 @@ public class LandingPageActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         elements = findViewById(R.id.elementsList);
         spinner = findViewById(R.id.spinnerCategoria);
+        handler = new Handler(this);
         currCategory = "";
 
         String[] categorias = {"Pelicula", "Juego", "Serie"};
@@ -121,9 +131,13 @@ public class LandingPageActivity extends AppCompatActivity {
             Log.d("USER", "display name: " + user.getDisplayName());
             Log.d("USER", "email: " + user.getEmail());
 
-           username = user.getDisplayName();
+
            //userTV.setText(username);
            uid = user.getUid();
+
+           String usernameURL = "https://dogetoing.herokuapp.com/users/" + uid;
+
+           Request.get(LandingPageActivity.this.handler,2,usernameURL).start();
 
            if (currCategory.isEmpty()){
                this.updateCategory("Pelicula");
@@ -194,5 +208,29 @@ public class LandingPageActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean handleMessage(@NonNull Message message) {
+        RequestResponse r = (RequestResponse) message.obj;
+        if (r.responseCode == HttpURLConnection.HTTP_OK) {
+            try {
+                JSONObject jsonUser = new JSONObject(r.data);
+                Log.wtf("NAME",r.data);
+                userTV.setText(jsonUser.getString("name"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        } else {
+            Toast.makeText(getApplicationContext(),"Error al obtener el username",Toast.LENGTH_SHORT).show();
+        }
+        return true;
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }
