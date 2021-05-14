@@ -37,32 +37,49 @@ public class Request extends Thread {
         return new Request(handler ,requestCode, RequestType.GET, url, null);
     }
 
+    public static Request delete(Handler handler, int requestCode, String url) {
+        return new Request(handler ,requestCode, RequestType.DELETE, url, null);
+    }
+    public static Request put(Handler handler, int requestCode, String url, JSONObject data) {
+        return new Request(handler, requestCode, RequestType.PUT, url, data);
+    }
+
+
     @Override
     public void run() {
         super.run();
 
-        Log.d("XAVITEST", "handleMessage: start");
-
         try {
-            Log.d("XAVITEST", "handleMessage: url");
+
             URL address = new URL(url);
-            Log.d("XAVITEST", "handleMessage: connection");
+
             HttpURLConnection conn = (HttpURLConnection) address.openConnection();
             conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
             //conn.setRequestProperty("Accept","application/json");
 
-            if (type == RequestType.POST) {
-                Log.d("XAVITEST", "handleMessage: POST");
-                conn.setRequestMethod("POST");
-                conn.setDoOutput(true);
+            switch (type) {
+                case GET:
+                    conn.setRequestMethod("GET");
+                    break;
+                case POST:
+                    conn.setRequestMethod("POST");
+                    break;
+                case DELETE:
+                    conn.setRequestMethod("DELETE");
+                    break;
+                case PUT:
+                    conn.setRequestMethod("PUT");
+                    break;
+            }
+            if (type == RequestType.POST || type == RequestType.PUT) {
 
+                conn.setDoOutput(true);
                 OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
                 wr.write(data.toString());
                 wr.flush();
             }
 
-            Log.d("XAVITEST", "handleMessage: read");
-            // Read the response with any response code
+
             // Because success isn't always represented with a code 400
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
@@ -73,19 +90,18 @@ public class Request extends Thread {
                 builder.append(line);
             }
 
-            Log.d("XAVITEST", "handleMessage: build");
+
             RequestResponse r = new RequestResponse();
             r.requestCode = requestCode;
             r.data = builder.toString();
             r.responseCode = conn.getResponseCode();
 
-            Log.d("XAVITEST", "handleMessage: send");
+
             Message msg = new Message();
             msg.obj = r;
             handler.sendMessage(msg);
         } catch (Exception e) {
 
-            Log.d("XAVITEST", "handleMessage: error" + e.toString());
             e.printStackTrace();
         }
 
@@ -94,7 +110,9 @@ public class Request extends Thread {
 
 enum RequestType {
     GET,
-    POST
+    POST,
+    DELETE,
+    PUT
 }
 
 class RequestResponse {
