@@ -14,17 +14,17 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="130dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintBottom_toTopOf="@+id/userNameTxtFriend"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/logout"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/dtt" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/userNameTxtFriend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="415dp"
+        android:layout_marginBottom="414dp"
         android:fontFamily="@font/roboto"
         android:text="Bienvenido!"
         android:textAlignment="center"
@@ -76,15 +76,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/userNameTxtFriend" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/elementsList"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="224dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginEnd="38dp"
+        android:layout_marginBottom="82dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,10 +92,10 @@
 
     <Spinner
         android:id="@+id/spinnerCategoria"
-        android:layout_width="322dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="45dp"
-        android:layout_marginEnd="45dp"
+        android:layout_width="319dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginEnd="44dp"
         android:layout_marginBottom="8dp"
         android:background="@color/white"
         android:backgroundTint="#2D82B7"
@@ -117,16 +117,15 @@
 
     <TextView
         android:id="@+id/textView15"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="10dp"
+        android:layout_width="344dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:text="Tus registros:"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/elementsList"
-        app:layout_constraintEnd_toEndOf="@+id/textView12"
-        app:layout_constraintStart_toStartOf="@+id/logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCategoria" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

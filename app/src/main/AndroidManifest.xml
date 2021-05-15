@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoMobiles">
-        <activity android:name=".ElementNewActivity"></activity>
+        <activity android:name=".InfoElementActivity"></activity>
+        <activity android:name=".ElementNewActivity" />
         <activity android:name=".UserActivity" />
         <activity android:name=".StartActivity">
             <intent-filter>
@@ -26,6 +27,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".LandingPageActivity" />
         <activity android:name=".MembersActivity" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
