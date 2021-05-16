@@ -39,6 +39,7 @@ import java.util.List;
 public class LandingPageActivity extends AppCompatActivity implements Handler.Callback {
 
     private static final int ADD_ELEMENT = 1;
+    private static final int GET_USERNAME = 2;
     private FirebaseAuth mAuth;
     private TextView userTV;
 
@@ -137,7 +138,7 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
 
            String usernameURL = "https://dogetoing.herokuapp.com/users/" + uid;
 
-           Request.get(LandingPageActivity.this.handler,2,usernameURL).start();
+           Request.get(LandingPageActivity.this.handler,GET_USERNAME,usernameURL).start();
 
            if (currCategory.isEmpty()){
                this.updateCategory("Pelicula");
@@ -214,13 +215,18 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
     public boolean handleMessage(@NonNull Message message) {
         RequestResponse r = (RequestResponse) message.obj;
         if (r.responseCode == HttpURLConnection.HTTP_OK) {
-            try {
-                JSONObject jsonUser = new JSONObject(r.data);
-                Log.wtf("NAME",r.data);
-                userTV.setText(jsonUser.getString("name"));
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if(r.requestCode==GET_USERNAME){
+                try {
+                    JSONObject jsonUser = new JSONObject(r.data);
+                    Log.wtf("NAME",r.data);
+                    userTV.setText(jsonUser.getString("name"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else{
+
             }
+
 
 
         } else {
