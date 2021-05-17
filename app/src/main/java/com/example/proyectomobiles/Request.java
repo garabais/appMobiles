@@ -99,9 +99,12 @@ public class Request extends Thread {
 
             Message msg = new Message();
             msg.obj = r;
-            handler.sendMessage(msg);
-        } catch (Exception e) {
 
+            if (handler != null) {
+                handler.sendMessage(msg);
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
