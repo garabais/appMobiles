@@ -118,6 +118,9 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
                 }
             } else if (r.requestCode==DELETE_ELEMENT){
                 Toast.makeText(getApplicationContext(),"Elemento eliminado de la colección del usuario",Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(this,CollectionUser.class);
+                i.putExtra("UID",uid);
+                startActivity(i);
             } else if (r.requestCode==GET_USER_INFO){
                 try {
                     jsonUserInfo = new JSONObject(r.data);
