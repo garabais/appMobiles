@@ -1,5 +1,6 @@
 package com.example.proyectomobiles;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,17 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
     @Override
     public void onBindViewHolder(@NonNull @NotNull UserViewHolder holder, int position) {
         holder.name.setText(data.get(position).getName());
+
+        holder.name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), UserActivity.class);
+                i.putExtra("userID", uid);
+                i.putExtra("otherUserID", data.get(position).getUid());
+
+                view.getContext().startActivity(i);
+            }
+        });
 
         holder.fButton.setOnClickListener(new View.OnClickListener() {
             @Override
