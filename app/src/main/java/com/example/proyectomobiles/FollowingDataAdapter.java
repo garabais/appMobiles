@@ -1,5 +1,6 @@
 package com.example.proyectomobiles;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,24 +34,27 @@ public class FollowingDataAdapter extends RecyclerView.Adapter<FollowingDataAdap
 
     @Override
     public void onBindViewHolder(@NonNull FollowingViewHolder holder, int position) {
+        Log.d("JSONcheck", fdata.get(position).toString());
         try {
-            holder.username.setText(fdata.get(position).getString("user"));
+            holder.username.setText(fdata.get(position).getString("followingName"));
             holder.elementname.setText(fdata.get(position).getString("name"));
             holder.score.setText(fdata.get(position).getString("score"));
+
+            Log.d("fdata", fdata.get(position).getString("followingName"));
         } catch (JSONException e){
             e.printStackTrace();
         }
     }
 
     @Override
-    public int getItemCount() { return 0; }
+    public int getItemCount() { return fdata.size(); }
 
     public class FollowingViewHolder extends RecyclerView.ViewHolder {
         TextView username, elementname, score;
 
         public FollowingViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
-            username = itemView.findViewById(R.id.elementFollowingRowName);
+            username = itemView.findViewById(R.id.userFollowingRowName);
             elementname = itemView.findViewById(R.id.elementFollowingRowName);
             score = itemView.findViewById(R.id.elementScoreFollowingRow);
         }

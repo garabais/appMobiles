@@ -2,6 +2,8 @@ package com.example.proyectomobiles;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -46,6 +48,9 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
 
     private List<String> names, scores;
 
+    private RecyclerView feedRecycler;
+    private ArrayList<JSONObject> feedData;
+    private FollowingDataAdapter feedAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +63,21 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
         names = new ArrayList<>();
         scores = new ArrayList<>();
 
-        loadFollowingData();
+
+        feedRecycler = findViewById(R.id.followingRecycler);
+        feedData = new ArrayList<JSONObject>();
+        feedAdapter = new FollowingDataAdapter(feedData);
+        feedRecycler.setAdapter(feedAdapter);
+        feedRecycler.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
     public void loadFollowingData(){
-        String followingURL = "https://dogetoing.herokuapp.com/users/" + uid + "/follows";
-        Request.get(LandingPageActivity.this.handler, GET_FOLLOWING, followingURL).start();
+        String followingURL = "https://dogetoing.herokuapp.com/users/" + uid + "/feed/";
+        Request.get(this.handler, GET_RANDOM_REVIEW, followingURL + "movies").start();
+        Request.get(this.handler, GET_RANDOM_REVIEW, followingURL + "games").start();
+        Request.get(this.handler, GET_RANDOM_REVIEW, followingURL + "shows").start();
+        Log.d("printURL", followingURL + "movies");
     }
 
     public String followingRandomData(){
@@ -114,6 +127,7 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
            String usernameURL = "https://dogetoing.herokuapp.com/users/" + uid;
 
            Request.get(LandingPageActivity.this.handler,GET_USERNAME,usernameURL).start();
+           loadFollowingData();
 
         }
     }
@@ -128,6 +142,9 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
     @Override
     public boolean handleMessage(@NonNull Message message) {
         RequestResponse r = (RequestResponse) message.obj;
+        Log.d("defineR", r.data);
+        Log.d("defineR", r.requestCode + "");
+        Log.d("defineR", r.responseCode + "");
         if (r.requestCode==GET_USERNAME) {
             if(r.responseCode == HttpURLConnection.HTTP_OK){
                 try {
@@ -141,45 +158,15 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
                 Toast.makeText(getApplicationContext(),"Error al obtener el username",Toast.LENGTH_SHORT).show();
             }
 
-        }else if(r.requestCode == GET_FOLLOWING) {
+        }else if(r.requestCode == GET_RANDOM_REVIEW){
             if(r.responseCode == HttpURLConnection.HTTP_OK){
-                try {
-                    JSONArray followArr = new JSONArray(r.data);
-                    for (int i = 0; i < followArr.length(); i ++){
-//                        String followname = followArr.getJSONObject(i).get()
-                        String followingUid = followArr.getJSONObject(i).getString("followUid");
-                        String url = "https://dogetoing.herokuapp.com/users/" + followingUid;
-                        Request req = Request.get(handler, GET_RANDOM_FOLLOWING_NAME, url);
-                        req.extras = new String[]{followingUid};
-                        req.start();
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }else if(r.requestCode == GET_RANDOM_FOLLOWING_NAME){
-            if(r.responseCode == HttpURLConnection.HTTP_OK){
-                try {
-                    JSONObject followingName = new JSONObject(r.data);
-
-                    String name = followingName.getString("name");
-                    String followuid = r.extras[0];
-                    String rcategory = followingRandomData();
-                    String url = "https://dogetoing.herokuapp.com/users/" + followuid + "/" + rcategory;
-
-                    Request req = Request.get(handler, GET_RANDOM_REVIEW, url);
-                    req.extras = new String[]{followuid, name, rcategory};
-                    req.start();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }else if(r.responseCode == GET_RANDOM_REVIEW){
-            if(r.responseCode == HttpURLConnection.HTTP_OK){
+//                Log.d("dataNAT", r.data);
                 try {
                     JSONArray reviews = new JSONArray(r.data);
+                    for(int i = 0; i < reviews.length(); i ++){
+                        feedData.add(reviews.getJSONObject(i));
+                    }
+                    feedAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

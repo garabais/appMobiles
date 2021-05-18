@@ -20,8 +20,6 @@ public class Request extends Thread {
     private JSONObject data;
     private Handler handler;
 
-    public String[] extras;
-
     private Request(Handler handler, int requestCode, RequestType type, String address, JSONObject data) {
         super();
         this.handler = handler;
@@ -96,7 +94,6 @@ public class Request extends Thread {
             r.requestCode = requestCode;
             r.data = builder.toString();
             r.responseCode = conn.getResponseCode();
-            r.extras = extras;
 
             Message msg = new Message();
             msg.obj = r;
@@ -123,7 +120,6 @@ class RequestResponse {
     int responseCode;
     int requestCode;
     String data;
-    public String[] extras;
 
     public RequestResponse() {
     }
