@@ -29,10 +29,12 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
 
     private TextView elementName, scoreAvgText, descriptionText, dateText;
     private Button deleteElement;
+    private JSONObject jsonUserInfo;
     private Spinner scoreSpinner;
     private String[] scores = {"0","1","2","3","4","5","6","7","8","9","10"};
     private ImageView img;
     private static final int GET_INFO = 5;
+    private static final int GET_USER_INFO = 6;
     private static final int DELETE_ELEMENT = 7;
     private String uid,elementID,typeElement,userURL, currentScore;
     Handler handler;
@@ -53,7 +55,11 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                InfoElementActivity.this.updateCategory((String) adapterView.getItemAtPosition(i));
+                try {
+                    InfoElementActivity.this.updateCategory((String) adapterView.getItemAtPosition(i));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -79,7 +85,7 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
         String elementInfoURL = "https://dogetoing.herokuapp.com/" + typeElement + "/" + elementID;
         userURL = "https://dogetoing.herokuapp.com/users/" + uid + "/" + typeElement + "/" + elementID;
         Request.get(InfoElementActivity.this.handler,GET_INFO,elementInfoURL).start();
-
+        Request.get(InfoElementActivity.this.handler,GET_USER_INFO,elementInfoURL).start();
 
     }
 
@@ -97,6 +103,7 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
                     dateText.setText(partsDate[0]);
                     descriptionText.setText(jsonINFO.getString("description"));
 
+
                     try {
                         InputStream is = (InputStream) new URL(jsonINFO.getString("imageURL")).getContent();
                         Drawable d = Drawable.createFromStream(is, "src name");
@@ -111,6 +118,13 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
                 }
             } else if (r.requestCode==DELETE_ELEMENT){
                 Toast.makeText(getApplicationContext(),"Elemento eliminado de la colección del usuario",Toast.LENGTH_SHORT).show();
+            } else if (r.requestCode==GET_USER_INFO){
+                try {
+                    jsonUserInfo = new JSONObject(r.data);
+                    currentScore = String.valueOf(jsonUserInfo.getInt("score"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
 
@@ -130,20 +144,14 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
 
     }
 
-    public void updateCategory(String cat){
-        if (cat.equals("Pelicula") || cat.equals("Serie") || cat.equals("Juego")){
-            String c = cat.toLowerCase();
+    public void updateCategory(String cat) throws JSONException {
+        if(currentScore.equals(cat)){
 
-            if (currentScore.equals(c)){
-                return;
-            }
+        } else {
+            JSONObject jsonScore = new JSONObject();
+            jsonScore.put("score",Integer.parseInt(cat));
 
-            currentScore = c;
-
-            //this.updateLists();
-
-        }  else {
-            return;
+            Request.put(InfoElementActivity.this.handler,DELETE_ELEMENT,userURL,jsonUserInfo).start();
         }
 
     }
