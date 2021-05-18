@@ -62,7 +62,7 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback 
         String UsernameURL = "https://dogetoing.herokuapp.com/users/" + otherUserID;
         Request.get(this.handler,GET_USERNAME,UsernameURL).start();
 
-        String FollowersURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/following";
+        String FollowersURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/followers";
         Request.get(this.handler,GET_FOLLOWERS,FollowersURL).start();
 
         String MoviesURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/movies";
