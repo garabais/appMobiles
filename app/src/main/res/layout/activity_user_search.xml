@@ -15,12 +15,13 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
+        android:foregroundTint="#F8F3F3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userSearchButton"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/userSearchButton"
@@ -43,8 +44,11 @@
         android:layout_marginTop="64dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
+        android:foregroundTint="#FFFFFF"
         android:hint="Name"
         android:inputType="textPersonName"
+        android:textColor="#F4EFEF"
+        android:textColorHint="#F8F8F8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

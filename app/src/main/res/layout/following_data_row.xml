@@ -13,20 +13,23 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight=".50"
-        android:text="Name" />
+        android:text="Name"
+        android:textColor="#FFFFFF" />
 
     <TextView
         android:id="@+id/elementFollowingRowName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight=".40"
-        android:text="element" />
+        android:text="element"
+        android:textColor="#FFFFFF" />
 
     <TextView
         android:id="@+id/elementScoreFollowingRow"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight=".10"
-        android:text="0" />
+        android:text="0"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>

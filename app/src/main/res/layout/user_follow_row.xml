@@ -13,7 +13,9 @@
         android:id="@+id/userFollowRowName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight=".70" />
+        android:layout_weight=".70"
+        android:textColor="#F1EFEF"
+        android:textColorHint="#F6F1F1" />
 
     <Button
         android:id="@+id/userFollowRowButton"
