@@ -40,6 +40,7 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
     private String uid,typeElement,userURL, currentScore;
     Handler handler;
     private int currScore, elementID;
+    private boolean canChange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,19 +58,23 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
         elementID = i.getIntExtra("elementID", -1);
         typeElement = i.getStringExtra("elementType");
 
+        canChange = false;
         handler = new Handler(this);
         scoreSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, scores));
         scoreSpinner.setSelection(1);
         scoreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String cal = (String) adapterView.getItemAtPosition(i);
+                if (canChange){
+                    String cal = (String) adapterView.getItemAtPosition(i);
 
-                try {
-                    updateCategory(Integer.valueOf(cal));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    try {
+                        updateCategory(Integer.valueOf(cal));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+
             }
 
             @Override
@@ -151,6 +156,8 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
                     currScore = jsonUserInfo.getInt("score");
 
                     scoreSpinner.setSelection(currScore);
+
+                    canChange = true;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
