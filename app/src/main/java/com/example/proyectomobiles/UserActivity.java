@@ -2,6 +2,7 @@ package com.example.proyectomobiles;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,14 +19,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserActivity extends AppCompatActivity implements Handler.Callback {
 
     private TextView numberFollowers, usernameText;
     private RecyclerView rvVideojuegos, rvPeliculas, rvSeries;
+    private MediaAdapter rvAdapterGames, rvAdapterMovies, rvAdapterShows;
     private String userID, otherUserID;
     private static final int GET_USERNAME = 2;
     private static final int GET_FOLLOWERS = 3;
+    private static final int GET_MOVIES = 11;
+    private static final int GET_VIDEOGAMES = 12;
+    private static final int GET_SHOWS = 13;
 
     Handler handler;
 
@@ -52,8 +60,15 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback 
         String UsernameURL = "https://dogetoing.herokuapp.com/users/" + otherUserID;
         Request.get(UserActivity.this.handler,GET_USERNAME,UsernameURL).start();
 
-        String FollowersURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/followers";
+        String FollowersURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "followers";
         Request.get(UserActivity.this.handler,GET_FOLLOWERS,FollowersURL).start();
+
+        String MoviesURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "movies";
+        Request.get(UserActivity.this.handler,GET_MOVIES,MoviesURL).start();
+        String VideogamesURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "videogames";
+        Request.get(UserActivity.this.handler,GET_VIDEOGAMES,VideogamesURL).start();
+        String ShowsURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "shows";
+        Request.get(UserActivity.this.handler,GET_SHOWS,ShowsURL).start();
     }
 
     @Override
@@ -76,6 +91,66 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            } else if (r.requestCode==GET_MOVIES){
+                try {
+                    JSONArray jsonMovies = new JSONArray(r.data);
+                    List<Media> listMovies = new ArrayList<Media>();
+                    for(int i =0;i<jsonMovies.length();i++){
+                        Media tmp = new Media(jsonMovies.getJSONObject(i).getInt("id"),jsonMovies.getJSONObject(i).getString("name"),jsonMovies.getJSONObject(i).getString("description"),jsonMovies.getJSONObject(i).getString("imageURL"),jsonMovies.getJSONObject(i).getString("releaseDate"),jsonMovies.getJSONObject(i).getDouble("score"));
+                        listMovies.add(tmp);
+                    }
+                    rvAdapterMovies = new MediaAdapter(listMovies, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            
+                        }
+                    });
+                    rvPeliculas.setAdapter(rvAdapterMovies);
+                    rvPeliculas.setLayoutManager(new LinearLayoutManager(this));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (r.requestCode==GET_VIDEOGAMES){
+                try {
+                    JSONArray jsonGames = new JSONArray(r.data);
+                    List<Media> listGames = new ArrayList<Media>();
+                    for(int i =0;i<jsonGames.length();i++){
+                        Media tmp = new Media(jsonGames.getJSONObject(i).getInt("id"),jsonGames.getJSONObject(i).getString("name"),jsonGames.getJSONObject(i).getString("description"),jsonGames.getJSONObject(i).getString("imageURL"),jsonGames.getJSONObject(i).getString("releaseDate"),jsonGames.getJSONObject(i).getDouble("score"));
+                        listGames.add(tmp);
+                    }
+                    rvAdapterGames = new MediaAdapter(listGames, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                        }
+                    });
+                    rvVideojuegos.setAdapter(rvAdapterMovies);
+                    rvVideojuegos.setLayoutManager(new LinearLayoutManager(this));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (r.requestCode==GET_SHOWS){
+                try {
+                    JSONArray jsonShows = new JSONArray(r.data);
+                    List<Media> listShows = new ArrayList<Media>();
+                    for(int i =0;i<jsonShows.length();i++){
+                        Media tmp = new Media(jsonShows.getJSONObject(i).getInt("id"),jsonShows.getJSONObject(i).getString("name"),jsonShows.getJSONObject(i).getString("description"),jsonShows.getJSONObject(i).getString("imageURL"),jsonShows.getJSONObject(i).getString("releaseDate"),jsonShows.getJSONObject(i).getDouble("score"));
+                        listShows.add(tmp);
+                    }
+                    rvAdapterShows = new MediaAdapter(listShows, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                        }
+                    });
+                    rvSeries.setAdapter(rvAdapterMovies);
+                    rvSeries.setLayoutManager(new LinearLayoutManager(this));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
 
 

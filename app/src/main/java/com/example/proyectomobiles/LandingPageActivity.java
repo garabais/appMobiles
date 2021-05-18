@@ -139,6 +139,13 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
         startActivity(i);
     }
 
+    public void personalColletion(View v) {
+        Intent i = new Intent(this, CollectionUser.class);
+        i.putExtra("UID", uid);
+
+        startActivity(i);
+    }
+
     @Override
     public boolean handleMessage(@NonNull Message message) {
         RequestResponse r = (RequestResponse) message.obj;

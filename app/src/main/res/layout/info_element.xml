@@ -69,7 +69,7 @@
         android:layout_marginEnd="151dp"
         android:text="TextView"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toStartOf="@+id/spinner2"
+        app:layout_constraintEnd_toStartOf="@+id/scoreSpinner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ViewScoreAvg" />
 
@@ -100,13 +100,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="11dp"
+        android:onClick="deleteElement"
         android:text="borrar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/scoreSpinner"
         android:layout_width="0dp"
         android:layout_height="16dp"
         android:layout_marginTop="333dp"
