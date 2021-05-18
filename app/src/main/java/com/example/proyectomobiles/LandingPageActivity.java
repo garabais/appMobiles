@@ -111,7 +111,7 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
         startActivityForResult(i, ADD_ELEMENT);
     }
 
-    public void registrarElemento(View v){
+    public void calificarElemento(View v){
         Intent i = new Intent(this, ElementNewActivity.class);
         i.putExtra("UID", uid);
         startActivityForResult(i, ADD_ELEMENT);
