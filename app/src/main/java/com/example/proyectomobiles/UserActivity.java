@@ -107,6 +107,10 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback 
         Request.get(this.handler,GET_VIDEOGAMES,VideogamesURL).start();
         String ShowsURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/shows";
         Request.get(this.handler,GET_SHOWS,ShowsURL).start();
+
+        lGames.clear();
+        lMovies.clear();
+        lShows.clear();
     }
 
     @Override
