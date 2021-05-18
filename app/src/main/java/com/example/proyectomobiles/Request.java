@@ -44,7 +44,6 @@ public class Request extends Thread {
         return new Request(handler, requestCode, RequestType.PUT, url, data);
     }
 
-
     @Override
     public void run() {
         super.run();
@@ -95,7 +94,6 @@ public class Request extends Thread {
             r.requestCode = requestCode;
             r.data = builder.toString();
             r.responseCode = conn.getResponseCode();
-
 
             Message msg = new Message();
             msg.obj = r;
