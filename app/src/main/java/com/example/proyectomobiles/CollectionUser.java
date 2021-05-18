@@ -127,6 +127,15 @@ public class CollectionUser extends AppCompatActivity implements Handler.Callbac
 
     @Override
     public void onClick(View view) {
+        int pos = recycler.getChildLayoutPosition(view);
 
+
+
+        Intent i = new Intent(this, InfoElementActivity.class);
+        i.putExtra("userID", uid);
+        i.putExtra("elementType", category);
+        i.putExtra("elementID", data.get(pos).getId());
+
+        startActivity(i);
     }
 }

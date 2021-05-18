@@ -36,27 +36,37 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
     private static final int GET_INFO = 5;
     private static final int GET_USER_INFO = 6;
     private static final int DELETE_ELEMENT = 7;
-    private String uid,elementID,typeElement,userURL, currentScore;
+    private static final int UPDATE_ELEMENT = 8;
+    private String uid,typeElement,userURL, currentScore;
     Handler handler;
+    private int currScore, elementID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_element);
-        elementName = findViewById(R.id.nombreElemento);
+        elementName = findViewById(R.id.elementName);
         scoreAvgText = findViewById(R.id.ScoreAvgText);
         descriptionText = findViewById(R.id.descriptionText);
         dateText = findViewById(R.id.dateText);
         deleteElement = findViewById(R.id.borrarElemento);
         img = findViewById(R.id.imgElement);
         scoreSpinner = findViewById(R.id.scoreSpinner);
+        Intent i = getIntent();
+        uid = i.getStringExtra("userID");
+        elementID = i.getIntExtra("elementID", -1);
+        typeElement = i.getStringExtra("elementType");
+
+        handler = new Handler(this);
         scoreSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, scores));
+        scoreSpinner.setSelection(1);
         scoreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String cal = (String) adapterView.getItemAtPosition(i);
 
                 try {
-                    InfoElementActivity.this.updateCategory((String) adapterView.getItemAtPosition(i));
+                    updateCategory(Integer.valueOf(cal));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -67,71 +77,87 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
 
             }
         });
-        handler = new Handler(this);
-
-        Intent i = getIntent();
-        uid = i.getStringExtra("userID");
-        elementID = i.getStringExtra("elementID");
-        typeElement = i.getStringExtra("elementType");
-
-
-
+        currScore = -1;
 
 
     }
     @Override
     protected void onStart(){
         super.onStart();
+        if (elementID == -1) {
+            finish();
+        }
         String elementInfoURL = "https://dogetoing.herokuapp.com/" + typeElement + "/" + elementID;
         userURL = "https://dogetoing.herokuapp.com/users/" + uid + "/" + typeElement + "/" + elementID;
-        Request.get(InfoElementActivity.this.handler,GET_INFO,elementInfoURL).start();
-        Request.get(InfoElementActivity.this.handler,GET_USER_INFO,elementInfoURL).start();
+        Request.get(this.handler,GET_INFO,elementInfoURL).start();
+        Request.get(this.handler,GET_USER_INFO,userURL).start();
 
     }
 
     @Override
     public boolean handleMessage(@NonNull Message message) {
         RequestResponse r = (RequestResponse) message.obj;
-        if (r.responseCode == HttpURLConnection.HTTP_OK) {
-            if(r.requestCode==GET_INFO){
+        Log.d("HANDLER", "handleMessage: " + r.requestCode);
+        Log.d("HANDLER", "handleMessage: " + r.responseCode);
+        Log.d("HANDLER", "handleMessage: " + r.data);
+
+
+        if(r.requestCode==GET_INFO){
+            if (r.responseCode == HttpURLConnection.HTTP_OK) {
                 try {
                     JSONObject jsonINFO = new JSONObject(r.data);
-                    Log.wtf("NAME",r.data);
                     elementName.setText(jsonINFO.getString("name"));
-                    scoreAvgText.setText(String.valueOf(jsonINFO.getDouble("score")));
+                    scoreAvgText.setText(String.format("%.2f", jsonINFO.getDouble("score")));
                     String[] partsDate = jsonINFO.getString("releaseDate").split("T");
                     dateText.setText(partsDate[0]);
                     descriptionText.setText(jsonINFO.getString("description"));
 
 
-                    try {
-                        InputStream is = (InputStream) new URL(jsonINFO.getString("imageURL")).getContent();
-                        Drawable d = Drawable.createFromStream(is, "src name");
-                        img.setImageDrawable(d);
-                    } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(),"ERROR DESCARGANDO LA IMAGEN",Toast.LENGTH_SHORT).show();
-                    }
+//                    try {
+//                        InputStream is = (InputStream) new URL(jsonINFO.getString("imageURL")).getContent();
+//                        Drawable d = Drawable.createFromStream(is, "src name");
+//                        img.setImageDrawable(d);
+//                    } catch (Exception e) {
+//                        Toast.makeText(getApplicationContext(),"ERROR DESCARGANDO LA IMAGEN",Toast.LENGTH_SHORT).show();
+//                    }
 
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } else if (r.requestCode==DELETE_ELEMENT){
+
+            } else {
+                Toast.makeText(getApplicationContext(),"Error al obtener la info",Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (r.requestCode==DELETE_ELEMENT){
+            if (r.responseCode == HttpURLConnection.HTTP_NO_CONTENT) {
                 Toast.makeText(getApplicationContext(),"Elemento eliminado de la colección del usuario",Toast.LENGTH_SHORT).show();
-            } else if (r.requestCode==GET_USER_INFO){
+                finish();
+            } else {
+                Toast.makeText(getApplicationContext(),"No se ha podido eliminar el elemento de la colección del usuario",Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (r.requestCode == UPDATE_ELEMENT) {
+            if (r.responseCode == HttpURLConnection.HTTP_NO_CONTENT) {
+                Toast.makeText(getApplicationContext(),"Elemento actualizado de la colección del usuario",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(),"No se ha podido actualizar el elemento de la colección del usuario",Toast.LENGTH_SHORT).show();
+            }
+        } else if (r.requestCode==GET_USER_INFO){
+            if (r.responseCode == HttpURLConnection.HTTP_OK){
                 try {
                     jsonUserInfo = new JSONObject(r.data);
-                    currentScore = String.valueOf(jsonUserInfo.getInt("score"));
+                    currScore = jsonUserInfo.getInt("score");
+
+                    scoreSpinner.setSelection(currScore);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
 
-
-
-        } else {
-            Toast.makeText(getApplicationContext(),"Error al obtener la info",Toast.LENGTH_SHORT).show();
         }
+
         return true;
     }
 
@@ -144,15 +170,12 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
 
     }
 
-    public void updateCategory(String cat) throws JSONException {
-        if(currentScore.equals(cat)){
-
-        } else {
+    public void updateCategory(int s) throws JSONException {
+        if(s != currScore){
             JSONObject jsonScore = new JSONObject();
-            jsonScore.put("score",Integer.parseInt(cat));
+            jsonScore.put("score", s);
 
-            Request.put(InfoElementActivity.this.handler,DELETE_ELEMENT,userURL,jsonUserInfo).start();
+            Request.put(this.handler,UPDATE_ELEMENT,userURL,jsonScore).start();
         }
-
     }
 }
