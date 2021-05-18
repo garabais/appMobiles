@@ -52,23 +52,25 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback 
         userID = i.getStringExtra("userID");
         otherUserID = i.getStringExtra("otherUserID");
 
+        handler = new Handler(this);
+
     }
 
     @Override
     protected void onStart(){
         super.onStart();
         String UsernameURL = "https://dogetoing.herokuapp.com/users/" + otherUserID;
-        Request.get(UserActivity.this.handler,GET_USERNAME,UsernameURL).start();
+        Request.get(this.handler,GET_USERNAME,UsernameURL).start();
 
-        String FollowersURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "followers";
-        Request.get(UserActivity.this.handler,GET_FOLLOWERS,FollowersURL).start();
+        String FollowersURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/following";
+        Request.get(this.handler,GET_FOLLOWERS,FollowersURL).start();
 
-        String MoviesURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "movies";
-        Request.get(UserActivity.this.handler,GET_MOVIES,MoviesURL).start();
-        String VideogamesURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "videogames";
-        Request.get(UserActivity.this.handler,GET_VIDEOGAMES,VideogamesURL).start();
-        String ShowsURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "shows";
-        Request.get(UserActivity.this.handler,GET_SHOWS,ShowsURL).start();
+        String MoviesURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/movies";
+        Request.get(this.handler,GET_MOVIES,MoviesURL).start();
+        String VideogamesURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/games";
+        Request.get(this.handler,GET_VIDEOGAMES,VideogamesURL).start();
+        String ShowsURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/shows";
+        Request.get(this.handler,GET_SHOWS,ShowsURL).start();
     }
 
     @Override
@@ -78,7 +80,7 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback 
             if(r.requestCode==GET_USERNAME){
                 try {
                     JSONObject jsonUser = new JSONObject(r.data);
-                    Log.wtf("NAME",r.data);
+                    Log.d("TESTNAME",r.data);
                     usernameText.setText(jsonUser.getString("name"));
                 } catch (JSONException e) {
                     e.printStackTrace();
