@@ -47,7 +47,6 @@ public class Request extends Thread {
     @Override
     public void run() {
         super.run();
-
         try {
 
             URL address = new URL(url);

@@ -92,6 +92,10 @@ public class UserSearchActivity extends AppCompatActivity implements Handler.Cal
                         JSONObject uJson = d.getJSONObject(i);
                         String uid = uJson.getString("uid");
                         String name = uJson.getString("name");
+
+                        if (uid.equals(userUid)){
+                            continue;
+                        }
                         users.add(new UserData(name, uid));
                     }
 
