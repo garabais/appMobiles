@@ -15,7 +15,6 @@
         android:fontFamily="@font/roboto"
         android:onClick="openLogin"
         android:text="Iniciar Sesion"
-        app:backgroundTint="#9F494242"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
@@ -28,7 +27,7 @@
         android:fontFamily="@font/roboto"
         android:onClick="openRegister"
         android:text="Registrarse"
-        app:backgroundTint="#9F494242"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LogIn" />
