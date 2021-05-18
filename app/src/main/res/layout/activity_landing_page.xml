@@ -71,10 +71,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:onClick="registrarElemento"
-        android:text="Registrar Elemento"
+        android:onClick="calificarElemento"
+        android:text="Calificar elemento"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button8"
+        app:layout_constraintHorizontal_bias="0.613"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userNameTxtFriend" />
 
@@ -132,6 +133,8 @@
         android:id="@+id/button8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
         android:onClick="searchUsers"
         android:text="usuarios"
         app:layout_constraintBottom_toBottomOf="parent"
