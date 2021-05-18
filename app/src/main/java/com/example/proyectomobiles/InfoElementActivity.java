@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -64,7 +66,7 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String cal = (String) adapterView.getItemAtPosition(i);
-
+                ((TextView)adapterView.getChildAt(i)).setTextColor(Color.WHITE);
                 try {
                     updateCategory(Integer.valueOf(cal));
                 } catch (JSONException e) {

@@ -110,12 +110,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+
     <Spinner
         android:id="@+id/scoreSpinner"
         android:layout_width="90dp"
         android:layout_height="20dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
+        android:backgroundTint="#F4F2F2"
+        android:foregroundTint="#FEFDFD"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/YourScoreView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
