@@ -68,7 +68,7 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String cal = (String) adapterView.getItemAtPosition(i);
-                ((TextView)adapterView.getChildAt(i)).setTextColor(Color.WHITE);
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 if (canChange){
                     try {
                         updateCategory(Integer.valueOf(cal));
