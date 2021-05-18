@@ -69,7 +69,18 @@ public class CollectionUser extends AppCompatActivity implements Handler.Callbac
             }
         });
 
-        setCategory("Pelicula");
+        category = "";
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (category.isEmpty()){
+            setCategory("Pelicula");
+        } else {
+            setCategory("");
+        }
     }
 
     void setCategory(String cat) {
@@ -82,6 +93,8 @@ public class CollectionUser extends AppCompatActivity implements Handler.Callbac
                 break;
             case "Serie":
                 category = "shows";
+                break;
+            case "":
                 break;
             default:
                 return;
@@ -98,7 +111,7 @@ public class CollectionUser extends AppCompatActivity implements Handler.Callbac
     public boolean handleMessage(@NonNull @NotNull Message message) {
 
         RequestResponse r = (RequestResponse) message.obj;
-        
+
         if(r.requestCode == UPDATE_LIST) {
             if (r.responseCode == HttpURLConnection.HTTP_OK) {
                 try {
