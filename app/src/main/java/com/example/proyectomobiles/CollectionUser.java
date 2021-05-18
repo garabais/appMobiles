@@ -69,12 +69,12 @@ public class CollectionUser extends AppCompatActivity implements Handler.Callbac
             }
         });
 
-        setCategory("Peliculas");
+        setCategory("Pelicula");
     }
 
     void setCategory(String cat) {
         switch (cat){
-            case "Peliculas":
+            case "Pelicula":
                 category = "movies";
                 break;
             case "Juego":
@@ -98,9 +98,7 @@ public class CollectionUser extends AppCompatActivity implements Handler.Callbac
     public boolean handleMessage(@NonNull @NotNull Message message) {
 
         RequestResponse r = (RequestResponse) message.obj;
-
-
-
+        
         if(r.requestCode == UPDATE_LIST) {
             if (r.responseCode == HttpURLConnection.HTTP_OK) {
                 try {

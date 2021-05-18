@@ -127,6 +127,7 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
            String usernameURL = "https://dogetoing.herokuapp.com/users/" + uid;
 
            Request.get(LandingPageActivity.this.handler,GET_USERNAME,usernameURL).start();
+           feedData.clear();
            loadFollowingData();
 
         }
