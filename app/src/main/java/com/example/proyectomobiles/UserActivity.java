@@ -2,6 +2,7 @@ package com.example.proyectomobiles;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -22,9 +23,13 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback 
 
     private TextView numberFollowers, usernameText;
     private RecyclerView rvVideojuegos, rvPeliculas, rvSeries;
+    private ElementListAdapter rvAdapterGames, rvAdapterMovies, rvAdapterShows;
     private String userID, otherUserID;
     private static final int GET_USERNAME = 2;
     private static final int GET_FOLLOWERS = 3;
+    private static final int GET_MOVIES = 11;
+    private static final int GET_VIDEOGAMES = 12;
+    private static final int GET_SHOWS = 13;
 
     Handler handler;
 
@@ -52,8 +57,15 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback 
         String UsernameURL = "https://dogetoing.herokuapp.com/users/" + otherUserID;
         Request.get(UserActivity.this.handler,GET_USERNAME,UsernameURL).start();
 
-        String FollowersURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/followers";
+        String FollowersURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "followers";
         Request.get(UserActivity.this.handler,GET_FOLLOWERS,FollowersURL).start();
+
+        String MoviesURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "movies";
+        Request.get(UserActivity.this.handler,GET_MOVIES,MoviesURL).start();
+        String VideogamesURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "videogames";
+        Request.get(UserActivity.this.handler,GET_VIDEOGAMES,VideogamesURL).start();
+        String ShowsURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "shows";
+        Request.get(UserActivity.this.handler,GET_SHOWS,ShowsURL).start();
     }
 
     @Override
@@ -76,6 +88,36 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            } else if (r.requestCode==GET_MOVIES){
+                try {
+                    JSONArray jsonMovies = new JSONArray(r.data);
+                    //rvAdapterMovies = new ElementListAdapter(names, scores);
+                    rvPeliculas.setAdapter(rvAdapterMovies);
+                    rvPeliculas.setLayoutManager(new LinearLayoutManager(this));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (r.requestCode==GET_VIDEOGAMES){
+                try {
+                    JSONArray jsonGames = new JSONArray(r.data);
+                    //rvAdapterGames = new ElementListAdapter(names, scores);
+                    rvVideojuegos.setAdapter(rvAdapterMovies);
+                    rvVideojuegos.setLayoutManager(new LinearLayoutManager(this));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } else if (r.requestCode==GET_SHOWS){
+                try {
+                    JSONArray jsonShows = new JSONArray(r.data);
+                    //rvAdapterShows = new ElementListAdapter(names, scores);
+                    rvSeries.setAdapter(rvAdapterMovies);
+                    rvSeries.setLayoutManager(new LinearLayoutManager(this));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
 
 
