@@ -147,6 +147,13 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
         startActivity(i);
     }
 
+    public void following(View v) {
+        Intent i = new Intent(this, FollowerActivity.class);
+        i.putExtra("UID", uid);
+
+        startActivity(i);
+    }
+
     @Override
     public boolean handleMessage(@NonNull Message message) {
         RequestResponse r = (RequestResponse) message.obj;

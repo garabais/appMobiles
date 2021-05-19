@@ -70,6 +70,10 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
                 Request.post(null, ADD_FOLLOW, addFollowUrl , d).start();
 
                 Toast.makeText(view.getContext(), String.format("Following %s", data.get(position).getName()), Toast.LENGTH_SHORT).show();
+
+                //data.remove(position);
+
+                //notifyDataSetChanged();
             }
         });
     }
