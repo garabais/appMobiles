@@ -59,7 +59,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
         holder.fButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.fButton.setEnabled(false);
+                //holder.fButton.setEnabled(false);
 
                 JSONObject d = new JSONObject();
                 try {
@@ -71,9 +71,9 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Us
 
                 Toast.makeText(view.getContext(), String.format("Following %s", data.get(position).getName()), Toast.LENGTH_SHORT).show();
 
-                //data.remove(position);
+                data.remove(position);
 
-                //notifyDataSetChanged();
+                notifyDataSetChanged();
             }
         });
     }

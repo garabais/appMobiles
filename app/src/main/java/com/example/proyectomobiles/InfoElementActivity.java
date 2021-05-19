@@ -148,6 +148,8 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
         } else if (r.requestCode == UPDATE_ELEMENT) {
             if (r.responseCode == HttpURLConnection.HTTP_NO_CONTENT) {
                 Toast.makeText(getApplicationContext(),"Elemento actualizado de la colección del usuario",Toast.LENGTH_SHORT).show();
+                String elementInfoURL = "https://dogetoing.herokuapp.com/" + typeElement + "/" + elementID;
+                Request.get(this.handler,GET_INFO,elementInfoURL).start();
             } else {
                 Toast.makeText(getApplicationContext(),"No se ha podido actualizar el elemento de la colección del usuario",Toast.LENGTH_SHORT).show();
             }
