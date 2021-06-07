@@ -9,14 +9,12 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="130dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/userNameTxtFriend"
+        android:layout_width="145dp"
+        android:layout_height="143dp"
+        android:layout_marginTop="24dp"
+        android:onClick="adminPanel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/logout"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/dtt" />
 
@@ -24,24 +22,21 @@
         android:id="@+id/userNameTxtFriend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="414dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/roboto"
         android:text="Bienvenido!"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/button5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/user"
-        android:layout_width="0dp"
+        android:layout_width="347dp"
         android:layout_height="53dp"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
         android:fontFamily="@font/roboto"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -56,12 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginBottom="204dp"
         android:onClick="logout"
         android:text="Logout"
-        app:layout_constraintBottom_toTopOf="@+id/user"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,32 +61,28 @@
         android:layout_width="166dp"
         android:layout_height="59dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginBottom="16dp"
         android:onClick="calificarElemento"
         android:text="Calificar elemento"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button9" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button8"
         android:layout_width="119dp"
         android:layout_height="56dp"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="12dp"
         android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
         android:onClick="searchUsers"
         android:text="usuarios"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button5"
-        app:layout_constraintTop_toBottomOf="@+id/button9" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/following"
         android:layout_width="wrap_content"
         android:layout_height="42dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
         android:text="Calificaciones de personas que sigues:"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
@@ -105,12 +92,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/followingRecycler"
-        android:layout_width="325dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="17dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/button9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -120,21 +107,19 @@
         android:id="@+id/button9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="135dp"
-        android:layout_marginTop="17dp"
-        android:layout_marginEnd="135dp"
+        android:layout_marginBottom="8dp"
         android:onClick="personalColletion"
         android:text="Mi colección"
+        app:layout_constraintBottom_toTopOf="@+id/button5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/followingRecycler" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/followingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="6dp"
+        android:layout_marginEnd="8dp"
         android:onClick="following"
         android:text="Following"
         android:textSize="12sp"

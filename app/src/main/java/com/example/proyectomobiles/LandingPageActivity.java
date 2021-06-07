@@ -52,6 +52,8 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
     private ArrayList<JSONObject> feedData;
     private FollowingDataAdapter feedAdapter;
 
+    private boolean isAdmin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +71,8 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
         feedAdapter = new FollowingDataAdapter(feedData);
         feedRecycler.setAdapter(feedAdapter);
         feedRecycler.setLayoutManager(new LinearLayoutManager(this));
+
+        isAdmin = false;
 
     }
 
@@ -154,6 +158,15 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
         startActivity(i);
     }
 
+    public void adminPanel(View v) {
+        if (isAdmin) {
+            Intent i = new Intent(this, AdminPanelActivity.class);
+            i.putExtra("UID", uid);
+
+            startActivity(i);
+        }
+    }
+
     @Override
     public boolean handleMessage(@NonNull Message message) {
         RequestResponse r = (RequestResponse) message.obj;
@@ -166,6 +179,7 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
                     JSONObject jsonUser = new JSONObject(r.data);
                     Log.wtf("NAME",r.data);
                     userTV.setText(jsonUser.getString("name"));
+                    isAdmin = jsonUser.getBoolean("is_admin");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
