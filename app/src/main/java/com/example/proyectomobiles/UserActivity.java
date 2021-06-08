@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import java.util.List;
 public class UserActivity extends AppCompatActivity implements Handler.Callback, View.OnClickListener {
 
     private TextView numberFollowers, usernameText;
+    private Button seguirButton;
     private RecyclerView rvVideojuegos, rvPeliculas, rvSeries;
     private MediaAdapter rvAdapterGames, rvAdapterMovies, rvAdapterShows;
     private String userID, otherUserID;
@@ -33,6 +35,10 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback,
     private static final int GET_MOVIES = 11;
     private static final int GET_VIDEOGAMES = 12;
     private static final int GET_SHOWS = 13;
+    private static final int ADD_FOLLOW = 1;
+
+    private static final String ADD_FOLLOW_URL_TEMPLATE = "https://dogetoing.herokuapp.com/users/%s/follows";
+    private String addFollowUrl;
 
     private MediaAdapter aGames, aMovies, aShows;
     private ArrayList<Media> lGames, lMovies, lShows;
@@ -50,11 +56,14 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback,
         rvVideojuegos = findViewById(R.id.rvVideojuegos);
         rvPeliculas = findViewById(R.id.rvPeliculas);
         rvSeries = findViewById(R.id.rvSeries);
+        seguirButton = findViewById(R.id.botonSeguir);
 
         Intent i = getIntent();
 
         userID = i.getStringExtra("userID");
         otherUserID = i.getStringExtra("otherUserID");
+
+        addFollowUrl = String.format(ADD_FOLLOW_URL_TEMPLATE, userID);
 
         handler = new Handler(this);
 
@@ -215,8 +224,16 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback,
 
     }
 
-    @Override
-    public void onClick(View view) {
 
+    public void follow(View v){
+        JSONObject d = new JSONObject();
+        try {
+            d.put("followUid", otherUserID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Request.post(null, ADD_FOLLOW, addFollowUrl , d).start();
+        Toast.makeText(v.getContext(), String.format("Following %s", usernameText.getText().toString()), Toast.LENGTH_SHORT).show();
+        seguirButton.setVisibility(View.GONE);
+        numberFollowers.setText(String.valueOf(Integer.parseInt(numberFollowers.getText().toString())+1));
     }
-}
