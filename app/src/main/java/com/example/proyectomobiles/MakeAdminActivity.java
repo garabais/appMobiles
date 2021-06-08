@@ -81,7 +81,7 @@ public class MakeAdminActivity extends AppCompatActivity implements Handler.Call
     public boolean handleMessage(@NonNull @NotNull Message message) {
 
         RequestResponse r = (RequestResponse) message.obj;
-        Log.d("RESPHAN", "handleMessage: " + r.data);
+
         if (r.requestCode == GET_USERS) {
 
             if (r.responseCode == HttpURLConnection.HTTP_OK) {
@@ -120,8 +120,9 @@ public class MakeAdminActivity extends AppCompatActivity implements Handler.Call
     @Override
     public void onClick(View view) {
         int pos = rv.getChildLayoutPosition(view);
-        JSONObject data = new JSONObject();
+
         try {
+            JSONObject data = new JSONObject();
             data.put("uid", users.get(pos).getUid());
 
             Request.post(h, MAKE_ADMIN, "https://dogetoing.herokuapp.com/admin", data).start();

@@ -30,7 +30,7 @@ public class AdminPanelActivity extends AppCompatActivity {
         Intent i = new Intent(this, AddEditMediaActivity.class);
         i.putExtra("UID", uid);
         i.putExtra("MEDIA", m);
-        i.putExtra("MODE", "ADD");
+        i.putExtra("ADD", true);
 
         startActivity(i);
 
@@ -42,7 +42,7 @@ public class AdminPanelActivity extends AppCompatActivity {
         Intent i = new Intent(this, SearchEditDeleteMedia.class);
         i.putExtra("UID", uid);
         i.putExtra("MEDIA", m);
-        i.putExtra("MODE", "EDIT");
+        i.putExtra("DELETE", false);
 
         startActivity(i);
     }
@@ -53,7 +53,7 @@ public class AdminPanelActivity extends AppCompatActivity {
         Intent i = new Intent(this, SearchEditDeleteMedia.class);
         i.putExtra("UID", uid);
         i.putExtra("MEDIA", m);
-        i.putExtra("MODE", "DELETE");
+        i.putExtra("DELETE", true);
 
         startActivity(i);
     }
