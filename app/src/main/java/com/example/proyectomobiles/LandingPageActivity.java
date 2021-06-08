@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,8 +38,9 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
     private static final int GET_FOLLOWING = 3;
     private static final int GET_RANDOM_FOLLOWING_NAME = 4;
     private static final int GET_RANDOM_REVIEW = 5;
+    private static final int CHANGE_USERNAME = 6;
     private FirebaseAuth mAuth;
-    private TextView userTV;
+    private EditText userTV;
 
     Handler handler;
 
@@ -186,8 +188,20 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
                     e.printStackTrace();
                 }
             }
+        } else if(r.requestCode==CHANGE_USERNAME){
+            //Toast.makeText(getApplicationContext(),"Se ha actualizado el username",Toast.LENGTH_SHORT).show();
+            if(r.responseCode==HttpURLConnection.HTTP_OK){
+                Toast.makeText(getApplicationContext(),"Se ha actualizado el username",Toast.LENGTH_SHORT).show();
+            }
         }
         return true;
+    }
+
+    public void changeUsername(View v) throws JSONException {
+        JSONObject jsonName = new JSONObject();
+        jsonName.put("name",userTV.getText());
+        Request.put(handler,CHANGE_USERNAME,"https://dogetoing.herokuapp.com/users/" + uid,jsonName).start();
+
     }
 
     @Override
