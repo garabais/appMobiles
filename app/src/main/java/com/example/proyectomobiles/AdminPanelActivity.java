@@ -30,7 +30,7 @@ public class AdminPanelActivity extends AppCompatActivity {
         Intent i = new Intent(this, AddEditMediaActivity.class);
         i.putExtra("UID", uid);
         i.putExtra("MEDIA", m);
-        i.putExtra("ADD", true);
+        // i.putExtra("ADD", true);
 
         startActivity(i);
 
