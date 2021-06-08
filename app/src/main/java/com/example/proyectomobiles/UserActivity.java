@@ -22,7 +22,7 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserActivity extends AppCompatActivity implements Handler.Callback {
+public class UserActivity extends AppCompatActivity implements Handler.Callback, View.OnClickListener {
 
     private TextView numberFollowers, usernameText;
     private RecyclerView rvVideojuegos, rvPeliculas, rvSeries;
@@ -65,21 +65,42 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback 
         aGames = new MediaAdapter(lGames, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int pos = rvVideojuegos.getChildLayoutPosition(view);
 
+                Intent i = new Intent(UserActivity.this, InfoElementActivity.class);
+                i.putExtra("userID", userID);
+                i.putExtra("elementType", "games");
+                i.putExtra("elementID", lGames.get(pos).getId());
+
+                startActivity(i);
             }
         });
 
         aMovies = new MediaAdapter(lMovies, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int pos = rvPeliculas.getChildLayoutPosition(view);
 
+                Intent i = new Intent(UserActivity.this, InfoElementActivity.class);
+                i.putExtra("userID", userID);
+                i.putExtra("elementType", "movies");
+                i.putExtra("elementID", lMovies.get(pos).getId());
+
+                startActivity(i);
             }
         });
 
         aShows = new MediaAdapter(lShows, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int pos = rvSeries.getChildLayoutPosition(view);
 
+                Intent i = new Intent(UserActivity.this, InfoElementActivity.class);
+                i.putExtra("userID", userID);
+                i.putExtra("elementType", "shows");
+                i.putExtra("elementID", lShows.get(pos).getId());
+
+                startActivity(i);
             }
         });
 
@@ -191,6 +212,11 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback 
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    @Override
+    public void onClick(View view) {
 
     }
 }
