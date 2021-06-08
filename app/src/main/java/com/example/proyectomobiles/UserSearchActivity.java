@@ -64,7 +64,8 @@ public class UserSearchActivity extends AppCompatActivity implements Handler.Cal
 
             builder.scheme("https")
                     .authority("dogetoing.herokuapp.com").appendPath("users")
-                    .appendQueryParameter("name", name);
+                    .appendQueryParameter("name", name)
+                    .appendQueryParameter("nf", userUid);
 
             String url = builder.build().toString();
 
