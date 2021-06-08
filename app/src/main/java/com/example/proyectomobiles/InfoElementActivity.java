@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,8 +26,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class InfoElementActivity extends AppCompatActivity implements Handler.Callback {
@@ -118,15 +124,13 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
                     String[] partsDate = jsonINFO.getString("releaseDate").split("T");
                     dateText.setText(partsDate[0]);
                     descriptionText.setText(jsonINFO.getString("description"));
+                    String imageUrl = jsonINFO.getString("imageURL");
 
 
-//                    try {
-//                        InputStream is = (InputStream) new URL(jsonINFO.getString("imageURL")).getContent();
-//                        Drawable d = Drawable.createFromStream(is, "src name");
-//                        img.setImageDrawable(d);
-//                    } catch (Exception e) {
-//                        Toast.makeText(getApplicationContext(),"ERROR DESCARGANDO LA IMAGEN",Toast.LENGTH_SHORT).show();
-//                    }
+
+                    new DownloadImageTask(img).execute(imageUrl);
+
+
 
 
                 } catch (JSONException e) {
@@ -188,5 +192,30 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
 
             Request.put(this.handler,UPDATE_ELEMENT,userURL,jsonScore).start();
         }
+    }
+}
+
+class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    ImageView bmImage;
+
+    public DownloadImageTask(ImageView bmImage) {
+        this.bmImage = bmImage;
+    }
+
+    protected Bitmap doInBackground(String... urls) {
+        String urldisplay = urls[0];
+        Bitmap mIcon11 = null;
+        try {
+            InputStream in = new java.net.URL(urldisplay).openStream();
+            mIcon11 = BitmapFactory.decodeStream(in);
+        } catch (Exception e) {
+            Log.e("Error", e.getMessage());
+            e.printStackTrace();
+        }
+        return mIcon11;
+    }
+
+    protected void onPostExecute(Bitmap result) {
+        bmImage.setImageBitmap(result);
     }
 }
