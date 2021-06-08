@@ -60,5 +60,25 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void recover(View v){
+        if(email.getText().toString().isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Por favor ingresa un correo!", Toast.LENGTH_SHORT).show();
+        }else{
+            mAuth.sendPasswordResetEmail(email.getText().toString())
+                    .addOnCompleteListener(new OnCompleteListener() {
+                        @Override
+                        public void onComplete(@NonNull Task task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "Correo enviado!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Imposible enviar el correo!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+        }
+
+    }
+
 
 }
