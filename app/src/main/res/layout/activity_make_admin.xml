@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg"
-    tools:context=".UserSearchActivity">
+    tools:context=".MakeAdminActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/userFollowRecycler"
+        android:id="@+id/adminFollowRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="32dp"
@@ -20,11 +20,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userSearchButton"
+        app:layout_constraintTop_toBottomOf="@+id/adminSearchButton"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/userSearchButton"
+        android:id="@+id/adminSearchButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -34,10 +34,10 @@
         android:text="Search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userSearchName" />
+        app:layout_constraintTop_toBottomOf="@+id/adminSearchName" />
 
     <EditText
-        android:id="@+id/userSearchName"
+        android:id="@+id/adminSearchName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"

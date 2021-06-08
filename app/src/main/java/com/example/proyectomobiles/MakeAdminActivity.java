@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,40 +23,41 @@ import org.json.JSONObject;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
-public class UserSearchActivity extends AppCompatActivity implements Handler.Callback {
+public class MakeAdminActivity extends AppCompatActivity implements Handler.Callback, View.OnClickListener {
 
-    private static final int GET_USERS = 1;
+    private final static int GET_USERS = 0;
+    private final static int MAKE_ADMIN = 1;
 
+    private String uid;
     private EditText searchName;
-    private Button searchBtn;
-    private RecyclerView usersFound;
-    private String userUid;
-    private ArrayList<UserData> users;
     private Handler h;
-    private UserSearchAdapter uAdapter;
+
+    private ArrayList<String> usernames;
+    private ArrayList<UserData> users;
+
+    private SingleElementAdapter adapter;
+    private RecyclerView rv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_search);
+        setContentView(R.layout.activity_make_admin);
 
-        searchName = findViewById(R.id.userSearchName);
-        searchBtn = findViewById(R.id.userSearchButton);
-        usersFound = findViewById(R.id.userFollowRecycler);
-
-        Intent i = getIntent();
-        userUid = i.getStringExtra("UID");
-        users = new ArrayList<>();
-
-        uAdapter = new UserSearchAdapter(users, userUid);
-        usersFound.setAdapter(uAdapter);
-        usersFound.setLayoutManager(new LinearLayoutManager(this));
-
+        Intent i  = getIntent();
+        uid = i.getStringExtra("UID");
+        searchName = findViewById(R.id.adminSearchName);
+        rv = findViewById(R.id.adminFollowRecycler);
         h = new Handler(this);
 
+        usernames = new ArrayList<>();
+        users = new ArrayList<>();
+        adapter = new SingleElementAdapter(usernames, this);
+        rv.setAdapter(adapter);
+        rv.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public void searchUsers(View v ) {
+    public void searchUsers(View v) {
+
         String name = searchName.getText().toString();
         if (!name.isEmpty()) {
             Uri.Builder builder = new Uri.Builder();
@@ -65,7 +65,7 @@ public class UserSearchActivity extends AppCompatActivity implements Handler.Cal
             builder.scheme("https")
                     .authority("dogetoing.herokuapp.com").appendPath("users")
                     .appendQueryParameter("name", name)
-                    .appendQueryParameter("nf", userUid);
+                    .appendQueryParameter("admin", "false");
 
             String url = builder.build().toString();
 
@@ -74,10 +74,12 @@ public class UserSearchActivity extends AppCompatActivity implements Handler.Cal
         } else {
             Toast.makeText(this, "Please enter a name to search", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
     public boolean handleMessage(@NonNull @NotNull Message message) {
+
         RequestResponse r = (RequestResponse) message.obj;
 
         if (r.requestCode == GET_USERS) {
@@ -88,19 +90,22 @@ public class UserSearchActivity extends AppCompatActivity implements Handler.Cal
                     JSONArray d = new JSONArray(r.data);
 
                     users.clear();
+                    usernames.clear();
 
                     for (int i = 0; i < d.length(); i++) {
                         JSONObject uJson = d.getJSONObject(i);
-                        String uid = uJson.getString("uid");
+                        String id = uJson.getString("uid");
                         String name = uJson.getString("name");
-
-                        if (uid.equals(userUid)){
+                        Log.d("RESPHAN", "handleMessage: pre " + uid + " " + name);
+                        if (uid.equals(id)){
                             continue;
                         }
-                        users.add(new UserData(name, uid));
+                        Log.d("RESPHAN", "handleMessage: post" + id + " " + name);
+                        users.add(new UserData(name, id));
+                        usernames.add(name);
                     }
-
-                    uAdapter.notifyDataSetChanged();
+                    Log.d("RESPHAN", "handleMessage: notify" + usernames );
+                    adapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -111,5 +116,25 @@ public class UserSearchActivity extends AppCompatActivity implements Handler.Cal
         }
         return true;
     }
-}
 
+    @Override
+    public void onClick(View view) {
+        int pos = rv.getChildLayoutPosition(view);
+
+        try {
+            JSONObject data = new JSONObject();
+            data.put("uid", users.get(pos).getUid());
+
+            Request.post(h, MAKE_ADMIN, "https://dogetoing.herokuapp.com/admin", data).start();
+
+            Toast.makeText(this, String.format("%s is now an admin", usernames.get(pos)), Toast.LENGTH_SHORT).show();
+            usernames.remove(pos);
+            users.remove(pos);
+            adapter.notifyDataSetChanged();
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+}
