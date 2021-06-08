@@ -36,7 +36,9 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
     private static final int GET_USERNAME = 2;
     private static final int GET_FOLLOWING = 3;
     private static final int GET_RANDOM_FOLLOWING_NAME = 4;
-    private static final int GET_RANDOM_REVIEW = 5;
+    private static final int GET_RANDOM_MOVIE = 5;
+    private static final int GET_RANDOM_GAME = 6;
+    private static final int GET_RANDOM_SHOW = 7;
     private FirebaseAuth mAuth;
     private TextView userTV;
 
@@ -78,9 +80,9 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
 
     public void loadFollowingData(){
         String followingURL = "https://dogetoing.herokuapp.com/users/" + uid + "/feed/";
-        Request.get(this.handler, GET_RANDOM_REVIEW, followingURL + "movies").start();
-        Request.get(this.handler, GET_RANDOM_REVIEW, followingURL + "games").start();
-        Request.get(this.handler, GET_RANDOM_REVIEW, followingURL + "shows").start();
+        Request.get(this.handler, GET_RANDOM_MOVIE, followingURL + "movies").start();
+        Request.get(this.handler, GET_RANDOM_GAME, followingURL + "games").start();
+        Request.get(this.handler, GET_RANDOM_SHOW, followingURL + "shows").start();
         Log.d("printURL", followingURL + "movies");
     }
 
@@ -127,6 +129,7 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
 
            //userTV.setText(username);
            uid = user.getUid();
+           feedAdapter.setUid(uid);
 
            String usernameURL = "https://dogetoing.herokuapp.com/users/" + uid;
 
@@ -187,13 +190,21 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
                 Toast.makeText(getApplicationContext(),"Error al obtener el username",Toast.LENGTH_SHORT).show();
             }
 
-        }else if(r.requestCode == GET_RANDOM_REVIEW){
+        }else if(r.requestCode == GET_RANDOM_GAME || r.requestCode == GET_RANDOM_MOVIE || r.requestCode == GET_RANDOM_SHOW){
             if(r.responseCode == HttpURLConnection.HTTP_OK){
 //                Log.d("dataNAT", r.data);
                 try {
                     JSONArray reviews = new JSONArray(r.data);
                     for(int i = 0; i < reviews.length(); i ++){
-                        feedData.add(reviews.getJSONObject(i));
+                        JSONObject o = reviews.getJSONObject(i);
+                        if (r.requestCode == GET_RANDOM_MOVIE) {
+                            o.put("type","movies");
+                        } else if(r.requestCode == GET_RANDOM_GAME){
+                            o.put("type","games");
+                        } else {
+                            o.put("type","shows");
+                        }
+                        feedData.add(o);
                     }
                     feedAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
