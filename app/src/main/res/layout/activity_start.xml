@@ -14,7 +14,7 @@
         android:layout_marginTop="32dp"
         android:fontFamily="@font/roboto"
         android:onClick="openLogin"
-        android:text="Iniciar Sesion"
+        android:text="login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
@@ -26,7 +26,7 @@
         android:layout_marginTop="32dp"
         android:fontFamily="@font/roboto"
         android:onClick="openRegister"
-        android:text="Registrarse"
+        android:text="signup"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -88,7 +88,8 @@
         android:ems="10"
         android:fontFamily="@font/roboto"
         android:inputType="textPersonName"
-        android:text="¡La Mejor App de recomendaciones!"
+        android:text="The best recommendations app!"
+        android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="21sp"
         app:layout_constraintEnd_toEndOf="parent"
