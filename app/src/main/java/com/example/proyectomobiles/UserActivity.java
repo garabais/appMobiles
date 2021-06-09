@@ -23,7 +23,7 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserActivity extends AppCompatActivity implements Handler.Callback, View.OnClickListener {
+public class UserActivity extends AppCompatActivity implements Handler.Callback {
 
     private TextView numberFollowers, usernameText;
     private Button seguirButton;
@@ -123,20 +123,20 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback,
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
         String UsernameURL = "https://dogetoing.herokuapp.com/users/" + otherUserID;
-        Request.get(this.handler,GET_USERNAME,UsernameURL).start();
+        Request.get(this.handler, GET_USERNAME, UsernameURL).start();
 
         String FollowersURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/followers";
-        Request.get(this.handler,GET_FOLLOWERS,FollowersURL).start();
+        Request.get(this.handler, GET_FOLLOWERS, FollowersURL).start();
 
         String MoviesURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/movies";
-        Request.get(this.handler,GET_MOVIES,MoviesURL).start();
+        Request.get(this.handler, GET_MOVIES, MoviesURL).start();
         String VideogamesURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/games";
-        Request.get(this.handler,GET_VIDEOGAMES,VideogamesURL).start();
+        Request.get(this.handler, GET_VIDEOGAMES, VideogamesURL).start();
         String ShowsURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/shows";
-        Request.get(this.handler,GET_SHOWS,ShowsURL).start();
+        Request.get(this.handler, GET_SHOWS, ShowsURL).start();
 
         lGames.clear();
         lMovies.clear();
@@ -151,28 +151,28 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback,
         Log.d("RESPONCETEST", "handleMessage: " + r.responseCode);
         Log.d("RESPONCETEST", "handleMessage: " + r.data);
         if (r.responseCode == HttpURLConnection.HTTP_OK) {
-            if(r.requestCode==GET_USERNAME){
+            if (r.requestCode == GET_USERNAME) {
                 try {
                     JSONObject jsonUser = new JSONObject(r.data);
-                    Log.d("TESTNAME",r.data);
+                    Log.d("TESTNAME", r.data);
                     usernameText.setText(jsonUser.getString("name"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } else if (r.requestCode==GET_FOLLOWERS){
+            } else if (r.requestCode == GET_FOLLOWERS) {
                 try {
                     JSONArray jsonFollowers = new JSONArray(r.data);
-                    Log.wtf("NAME",r.data);
+                    Log.wtf("NAME", r.data);
                     numberFollowers.setText(String.valueOf(jsonFollowers.length()));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } else if (r.requestCode==GET_MOVIES){
+            } else if (r.requestCode == GET_MOVIES) {
                 try {
                     JSONArray jsonMovies = new JSONArray(r.data);
 
-                    for(int i =0;i<jsonMovies.length();i++){
-                        Media tmp = new Media(jsonMovies.getJSONObject(i).getInt("id"),jsonMovies.getJSONObject(i).getString("name"),jsonMovies.getJSONObject(i).getString("description"),jsonMovies.getJSONObject(i).getString("imageURL"),jsonMovies.getJSONObject(i).getString("releaseDate"),jsonMovies.getJSONObject(i).getDouble("score"));
+                    for (int i = 0; i < jsonMovies.length(); i++) {
+                        Media tmp = new Media(jsonMovies.getJSONObject(i).getInt("id"), jsonMovies.getJSONObject(i).getString("name"), jsonMovies.getJSONObject(i).getString("description"), jsonMovies.getJSONObject(i).getString("imageURL"), jsonMovies.getJSONObject(i).getString("releaseDate"), jsonMovies.getJSONObject(i).getDouble("score"));
                         lMovies.add(tmp);
                     }
 
@@ -181,12 +181,12 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback,
                     e.printStackTrace();
                 }
 
-            } else if (r.requestCode==GET_VIDEOGAMES){
+            } else if (r.requestCode == GET_VIDEOGAMES) {
                 try {
                     JSONArray jsonGames = new JSONArray(r.data);
 
-                    for(int i =0;i<jsonGames.length();i++){
-                        Media tmp = new Media(jsonGames.getJSONObject(i).getInt("id"),jsonGames.getJSONObject(i).getString("name"),jsonGames.getJSONObject(i).getString("description"),jsonGames.getJSONObject(i).getString("imageURL"),jsonGames.getJSONObject(i).getString("releaseDate"),jsonGames.getJSONObject(i).getDouble("score"));
+                    for (int i = 0; i < jsonGames.length(); i++) {
+                        Media tmp = new Media(jsonGames.getJSONObject(i).getInt("id"), jsonGames.getJSONObject(i).getString("name"), jsonGames.getJSONObject(i).getString("description"), jsonGames.getJSONObject(i).getString("imageURL"), jsonGames.getJSONObject(i).getString("releaseDate"), jsonGames.getJSONObject(i).getDouble("score"));
                         lGames.add(tmp);
                     }
 
@@ -195,12 +195,12 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback,
                     e.printStackTrace();
                 }
 
-            } else if (r.requestCode==GET_SHOWS){
+            } else if (r.requestCode == GET_SHOWS) {
                 try {
                     JSONArray jsonShows = new JSONArray(r.data);
 
-                    for(int i =0;i<jsonShows.length();i++){
-                        Media tmp = new Media(jsonShows.getJSONObject(i).getInt("id"),jsonShows.getJSONObject(i).getString("name"),jsonShows.getJSONObject(i).getString("description"),jsonShows.getJSONObject(i).getString("imageURL"),jsonShows.getJSONObject(i).getString("releaseDate"),jsonShows.getJSONObject(i).getDouble("score"));
+                    for (int i = 0; i < jsonShows.length(); i++) {
+                        Media tmp = new Media(jsonShows.getJSONObject(i).getInt("id"), jsonShows.getJSONObject(i).getString("name"), jsonShows.getJSONObject(i).getString("description"), jsonShows.getJSONObject(i).getString("imageURL"), jsonShows.getJSONObject(i).getString("releaseDate"), jsonShows.getJSONObject(i).getDouble("score"));
                         lShows.add(tmp);
                     }
 
@@ -212,9 +212,8 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback,
             }
 
 
-
         } else {
-            Toast.makeText(getApplicationContext(),"Error al obtener el username",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Error al obtener el username", Toast.LENGTH_SHORT).show();
         }
         return true;
     }
@@ -225,15 +224,16 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback,
     }
 
 
-    public void follow(View v){
+    public void follow(View v) {
         JSONObject d = new JSONObject();
         try {
             d.put("followUid", otherUserID);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Request.post(null, ADD_FOLLOW, addFollowUrl , d).start();
+        Request.post(null, ADD_FOLLOW, addFollowUrl, d).start();
         Toast.makeText(v.getContext(), String.format("Following %s", usernameText.getText().toString()), Toast.LENGTH_SHORT).show();
         seguirButton.setVisibility(View.GONE);
-        numberFollowers.setText(String.valueOf(Integer.parseInt(numberFollowers.getText().toString())+1));
+        numberFollowers.setText(String.valueOf(Integer.parseInt(numberFollowers.getText().toString()) + 1));
     }
+}
