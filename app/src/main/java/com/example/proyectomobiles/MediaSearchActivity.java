@@ -61,24 +61,46 @@ public class MediaSearchActivity extends AppCompatActivity implements Handler.Ca
     public void search(View v) {
         String query = text.getText().toString();
         detectMedia();
+        Uri.Builder builder = new Uri.Builder();
         if (query.isEmpty()){
-            Uri.Builder builder = new Uri.Builder();
 
-            builder.scheme("https")
-                    .authority("dogetoing.herokuapp.com").appendPath(mediaType);
+            if (user) {
+                builder.scheme("https")
+                        .authority("dogetoing.herokuapp.com")
+                        .appendPath("users")
+                        .appendPath(uid)
+                        .appendPath(mediaType);
+            } else {
+                builder.scheme("https")
+                        .authority("dogetoing.herokuapp.com")
+                        .appendPath(mediaType);
+            }
+
+
 
             String url = builder.build().toString();
 
             Request.get(h, GET_MEDIA, url).start();
         } else {
-            Uri.Builder builder = new Uri.Builder();
 
-            builder.scheme("https")
-                    .authority("dogetoing.herokuapp.com").appendPath(mediaType)
-                    .appendQueryParameter("name", query);
+            if (user) {
+
+                builder.scheme("https")
+                        .authority("dogetoing.herokuapp.com")
+                        .appendPath("users")
+                        .appendPath(uid)
+                        .appendPath(mediaType)
+                        .appendQueryParameter("name", query);
+            } else {
+                builder.scheme("https")
+                        .authority("dogetoing.herokuapp.com")
+                        .appendPath(mediaType)
+                        .appendQueryParameter("name", query);
+
+
+            }
 
             String url = builder.build().toString();
-
             Request.get(h, GET_MEDIA, url).start();
         }
     }
