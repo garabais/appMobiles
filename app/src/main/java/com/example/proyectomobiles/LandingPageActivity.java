@@ -106,9 +106,9 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
     }
 
     public void calificarElemento(View v){
-        Intent i = new Intent(this, ElementNewActivity.class);
+        Intent i = new Intent(this, MediaSearchActivity.class);
         i.putExtra("UID", uid);
-        startActivityForResult(i, ADD_ELEMENT);
+        startActivity(i);
     }
 
 

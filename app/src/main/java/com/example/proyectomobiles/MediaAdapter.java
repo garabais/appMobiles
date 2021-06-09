@@ -35,7 +35,12 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
     @Override
     public void onBindViewHolder(@NonNull @NotNull MediaViewHolder holder, int position) {
         holder.name.setText(data.get(position).getName());
-        holder.score.setText(data.get(position).getScore() + "");
+        if (data.get(position).getScore() == -1) {
+            holder.score.setText("-");
+        } else {
+            holder.score.setText(data.get(position).getScore() + "");
+        }
+
     }
 
     @Override
