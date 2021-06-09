@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoMobiles">
-        <activity android:name=".MakeAdminActivity"></activity>
+        <activity android:name=".MediaSearchActivity"></activity>
+        <activity android:name=".MakeAdminActivity" />
         <activity android:name=".AddDeleteMediaActivity" />
         <activity android:name=".SearchEditDeleteMedia" />
         <activity android:name=".AddEditMediaActivity" />

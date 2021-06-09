@@ -105,10 +105,10 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
         startActivityForResult(i, ADD_ELEMENT);
     }
 
-    public void calificarElemento(View v){
-        Intent i = new Intent(this, ElementNewActivity.class);
+    public void searchElement(View v){
+        Intent i = new Intent(this, MediaSearchActivity.class);
         i.putExtra("UID", uid);
-        startActivityForResult(i, ADD_ELEMENT);
+        startActivity(i);
     }
 
 
@@ -148,9 +148,13 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
     }
 
     public void personalColletion(View v) {
-        Intent i = new Intent(this, CollectionUser.class);
+//        Intent i = new Intent(this, CollectionUser.class);
+//        i.putExtra("UID", uid);
+//
+//        startActivity(i);
+        Intent i = new Intent(this, MediaSearchActivity.class);
         i.putExtra("UID", uid);
-
+        i.putExtra("USER", true);
         startActivity(i);
     }
 
