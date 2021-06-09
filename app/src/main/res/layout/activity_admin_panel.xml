@@ -15,7 +15,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:onClick="makeAdmin"
-        android:text="Convertir admin"
+        android:text="Make admin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView16" />
@@ -28,7 +28,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:onClick="update"
-        android:text="editar"
+        android:text="Edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button12" />
@@ -41,7 +41,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:onClick="delete"
-        android:text="borrar"
+        android:text="Delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button11" />
@@ -54,7 +54,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:onClick="add"
-        android:text="agregar"
+        android:text="Add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/adminRG" />
@@ -74,21 +74,21 @@
             android:id="@+id/adminRadioPeliculas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pelicula"
+            android:text="Movie"
             android:textColor="@color/white" />
 
         <RadioButton
             android:id="@+id/adminRadioJuego"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Juego"
+            android:text="Game"
             android:textColor="@color/white" />
 
         <RadioButton
             android:id="@+id/adminRadioSerie"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Serie"
+            android:text="Show"
             android:textColor="@color/white" />
     </RadioGroup>
 
@@ -109,7 +109,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Usuarios"
+        android:text="Users"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -121,7 +121,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Contenido"
+        android:text="Content"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
