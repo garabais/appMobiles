@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,8 +27,10 @@ public class FollowerActivity extends AppCompatActivity implements Handler.Callb
 
 
     private static final int GET_USERS = 1;
+    private static final int SEARCH_USERS = 2;
 
     private RecyclerView usersFound;
+    private EditText searchName;
     private String userID;
     private ArrayList<UserData> users;
     private Handler h;
@@ -39,7 +42,7 @@ public class FollowerActivity extends AppCompatActivity implements Handler.Callb
         setContentView(R.layout.activity_follower);
 
         usersFound = findViewById(R.id.userFollowRecycler);
-
+        searchName = findViewById(R.id.userSearchName2);
         Intent i = getIntent();
         userID = i.getStringExtra("UID");
         users = new ArrayList<>();
@@ -58,6 +61,28 @@ public class FollowerActivity extends AppCompatActivity implements Handler.Callb
         String url = String.format("https://dogetoing.herokuapp.com/users/%s/follows", userID);
 
         Request.get(h, GET_USERS, url).start();
+    }
+
+    public void searchUsers2(View v ) {
+        String name = searchName.getText().toString();
+        if (!name.isEmpty()) {
+            Uri.Builder builder = new Uri.Builder();
+
+            builder.scheme("https")
+                    .authority("dogetoing.herokuapp.com").appendPath("users").appendPath(userID).appendPath("follows")
+                    .appendQueryParameter("name", name);
+
+            String url = builder.build().toString();
+            Log.d("URL",url);
+
+            Request.get(h, SEARCH_USERS, url).start();
+
+        } else {
+
+            String url = "https://dogetoing.herokuapp.com/users/" + userID + "/follows";
+
+            Request.get(h, GET_USERS, url).start();
+        }
     }
 
     @Override
@@ -91,6 +116,28 @@ public class FollowerActivity extends AppCompatActivity implements Handler.Callb
 
 
             }
+        } else if (r.requestCode == SEARCH_USERS) {
+            //Toast.makeText(getApplicationContext(),"Buscando Usuarios",Toast.LENGTH_SHORT).show();
+            if (r.responseCode == HttpURLConnection.HTTP_OK) {
+                Toast.makeText(getApplicationContext(),"Buscando Usuarios",Toast.LENGTH_SHORT).show();
+                try {
+                    JSONArray d = new JSONArray(r.data);
+
+                    users.clear();
+
+                    for (int i = 0; i < d.length(); i++) {
+                        JSONObject uJson = d.getJSONObject(i);
+                        String uid = uJson.getString("followUid");
+                        String name = uJson.getString("followName");
+                        users.add(new UserData(name, uid));
+                    }
+
+                    fAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
         return true;
     }
