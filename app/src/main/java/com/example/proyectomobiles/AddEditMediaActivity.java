@@ -67,6 +67,8 @@ public class AddEditMediaActivity extends AppCompatActivity implements Handler.C
             b.setText("UPDATE");
         }
 
+
+
     }
 
     public void addEdit(View v) {
