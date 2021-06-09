@@ -105,6 +105,7 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
                         Log.d("UPDATETEST", "onItemSelected: CHANGE");
 
 
+                        //userURL = "https://dogetoing.herokuapp.com/users/" + uid + "/" + typeElement + "/" + ;
                         Request.put(InfoElementActivity.this.handler,UPDATE_ELEMENT,userURL,jsonScore).start();
 
                     } else {
@@ -116,10 +117,10 @@ public class InfoElementActivity extends AppCompatActivity implements Handler.Ca
                             e.printStackTrace();
                         }
 
-                        userURL = "https://dogetoing.herokuapp.com/users/" + uid + "/" + typeElement;
+                        String url = "https://dogetoing.herokuapp.com/users/" + uid + "/" + typeElement;
 
-                        Request.post(InfoElementActivity.this.handler,ADD_ELEMENT,userURL,jsonScore).start();
-
+                        Request.post(InfoElementActivity.this.handler,ADD_ELEMENT,url,jsonScore).start();
+                        userScored = true;
                     }
                     currScore = score;
 
