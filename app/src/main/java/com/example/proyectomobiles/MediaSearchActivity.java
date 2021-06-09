@@ -79,6 +79,7 @@ public class MediaSearchActivity extends AppCompatActivity implements Handler.Ca
 
 
             String url = builder.build().toString();
+            Log.d("RESPONCETEST", "handleMessage: " + url);
 
             Request.get(h, GET_MEDIA, url).start();
         } else {
@@ -100,7 +101,9 @@ public class MediaSearchActivity extends AppCompatActivity implements Handler.Ca
 
             }
 
+
             String url = builder.build().toString();
+            Log.d("RESPONCETEST", "handleMessage: " + url);
             Request.get(h, GET_MEDIA, url).start();
         }
     }

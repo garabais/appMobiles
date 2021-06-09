@@ -36,6 +36,7 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback,
     private static final int GET_VIDEOGAMES = 12;
     private static final int GET_SHOWS = 13;
     private static final int ADD_FOLLOW = 1;
+    private static final int IS_FOLLOWING = 23;
 
     private static final String ADD_FOLLOW_URL_TEMPLATE = "https://dogetoing.herokuapp.com/users/%s/follows";
     private String addFollowUrl;
@@ -119,6 +120,7 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback,
         rvPeliculas.setLayoutManager(new LinearLayoutManager(this));
         rvSeries.setAdapter(aShows);
         rvSeries.setLayoutManager(new LinearLayoutManager(this));
+        //seguirButton.setVisibility(View.GONE);
 
     }
 
@@ -130,6 +132,10 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback,
 
         String FollowersURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/followers";
         Request.get(this.handler, GET_FOLLOWERS, FollowersURL).start();
+
+        String isFollowing = "https://dogetoing.herokuapp.com/users/" + userID + "/follows/" + otherUserID;
+        Log.d("RESPONCETEST", "onStart: " + isFollowing);
+        Request.get(this.handler, IS_FOLLOWING, isFollowing).start();
 
         String MoviesURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/movies";
         Request.get(this.handler, GET_MOVIES, MoviesURL).start();
@@ -209,11 +215,18 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback,
                     e.printStackTrace();
                 }
 
+            } else if(r.requestCode == IS_FOLLOWING) {
+                Log.d("PRUEBATESTRESP", "handleMessage: ");
+                seguirButton.setVisibility(View.GONE);
             }
 
 
-        } else {
-            Toast.makeText(getApplicationContext(), "Error al obtener el username", Toast.LENGTH_SHORT).show();
+        } else if(r.requestCode == ADD_FOLLOW) {
+            if (r.responseCode == HttpURLConnection.HTTP_OK){
+                String FollowersURL = "https://dogetoing.herokuapp.com/users/" + otherUserID + "/followers";
+                Request.get(this.handler, GET_FOLLOWERS, FollowersURL).start();
+                seguirButton.setVisibility(View.GONE);
+            }
         }
         return true;
     }
@@ -233,8 +246,8 @@ public class UserActivity extends AppCompatActivity implements Handler.Callback,
         }
         Request.post(null, ADD_FOLLOW, addFollowUrl, d).start();
         Toast.makeText(v.getContext(), String.format("Following %s", usernameText.getText().toString()), Toast.LENGTH_SHORT).show();
-        seguirButton.setVisibility(View.GONE);
-        numberFollowers.setText(String.valueOf(Integer.parseInt(numberFollowers.getText().toString()) + 1));
+
+        //numberFollowers.setText(String.valueOf(Integer.parseInt(numberFollowers.getText().toString()) + 1));
     }
 
     @Override
