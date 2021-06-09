@@ -8,6 +8,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,7 +28,7 @@ public class FollowerActivity extends AppCompatActivity implements Handler.Callb
 
 
     private static final int GET_USERS = 1;
-    private static final int SEARCH_USERS = 2;
+
 
     private RecyclerView usersFound;
     private EditText searchName;
@@ -35,6 +36,8 @@ public class FollowerActivity extends AppCompatActivity implements Handler.Callb
     private ArrayList<UserData> users;
     private Handler h;
     private FollowerAdapter fAdapter;
+    private RadioGroup rg;
+    private String mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,36 +53,77 @@ public class FollowerActivity extends AppCompatActivity implements Handler.Callb
         fAdapter = new FollowerAdapter(users, userID);
         usersFound.setAdapter(fAdapter);
         usersFound.setLayoutManager(new LinearLayoutManager(this));
+        rg = findViewById(R.id.followersRg);
 
         h = new Handler(this);
+        detectType();
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        String url = String.format("https://dogetoing.herokuapp.com/users/%s/follows", userID);
+
+        Uri.Builder builder = new Uri.Builder();
+        detectType();
+        builder.scheme("https")
+                .authority("dogetoing.herokuapp.com")
+                .appendPath("users")
+                .appendPath(userID)
+                .appendPath(mode);
+
+        String url = builder.build().toString();
+        //String url = String.format("https://dogetoing.herokuapp.com/users/%s/follows", userID);
 
         Request.get(h, GET_USERS, url).start();
     }
 
+    public void detectType() {
+        int curr = rg.getCheckedRadioButtonId();
+
+        if (curr == R.id.followersFollowing) {
+            mode =  "follows";
+        } else {
+            mode = "followers";
+        }
+    }
+
     public void searchUsers2(View v ) {
         String name = searchName.getText().toString();
+        detectType();
+        Uri.Builder builder = new Uri.Builder();
+
+        if (mode.equals("follows")) {
+            fAdapter.setFollowers(false);
+        } else {
+            fAdapter.setFollowers(true);
+        }
+
         if (!name.isEmpty()) {
-            Uri.Builder builder = new Uri.Builder();
 
             builder.scheme("https")
-                    .authority("dogetoing.herokuapp.com").appendPath("users").appendPath(userID).appendPath("follows")
+                    .authority("dogetoing.herokuapp.com")
+                    .appendPath("users")
+                    .appendPath(userID)
+                    .appendPath(mode)
                     .appendQueryParameter("name", name);
 
             String url = builder.build().toString();
             Log.d("URL",url);
 
-            Request.get(h, SEARCH_USERS, url).start();
+            Request.get(h, GET_USERS, url).start();
 
         } else {
 
-            String url = "https://dogetoing.herokuapp.com/users/" + userID + "/follows";
+            builder.scheme("https")
+                    .authority("dogetoing.herokuapp.com")
+                    .appendPath("users")
+                    .appendPath(userID)
+                    .appendPath(mode);
+
+            String url = builder.build().toString();
+
+            //String url = "https://dogetoing.herokuapp.com/users/" + userID + "/follows";
 
             Request.get(h, GET_USERS, url).start();
         }
@@ -103,7 +147,13 @@ public class FollowerActivity extends AppCompatActivity implements Handler.Callb
 
                     for (int i = 0; i < d.length(); i++) {
                         JSONObject uJson = d.getJSONObject(i);
-                        String uid = uJson.getString("followUid");
+                        String uid = "";
+                        if (!mode.equals("follows")) {
+                            uid = uJson.getString("uid");
+                        } else {
+                            uid = uJson.getString("followUid");
+                        }
+                        //String uid = uJson.getString("followUid");
                         String name = uJson.getString("followName");
                         users.add(new UserData(name, uid));
                     }
@@ -115,27 +165,6 @@ public class FollowerActivity extends AppCompatActivity implements Handler.Callb
                 }
 
 
-            }
-        } else if (r.requestCode == SEARCH_USERS) {
-            //Toast.makeText(getApplicationContext(),"Buscando Usuarios",Toast.LENGTH_SHORT).show();
-            if (r.responseCode == HttpURLConnection.HTTP_OK) {
-                Toast.makeText(getApplicationContext(),"Buscando Usuarios",Toast.LENGTH_SHORT).show();
-                try {
-                    JSONArray d = new JSONArray(r.data);
-
-                    users.clear();
-
-                    for (int i = 0; i < d.length(); i++) {
-                        JSONObject uJson = d.getJSONObject(i);
-                        String uid = uJson.getString("followUid");
-                        String name = uJson.getString("followName");
-                        users.add(new UserData(name, uid));
-                    }
-
-                    fAdapter.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             }
 
         }
