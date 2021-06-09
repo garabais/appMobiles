@@ -59,8 +59,8 @@ public class UserSearchActivity extends AppCompatActivity implements Handler.Cal
 
     public void searchUsers(View v ) {
         String name = searchName.getText().toString();
+        Uri.Builder builder = new Uri.Builder();
         if (!name.isEmpty()) {
-            Uri.Builder builder = new Uri.Builder();
 
             builder.scheme("https")
                     .authority("dogetoing.herokuapp.com")
@@ -73,7 +73,6 @@ public class UserSearchActivity extends AppCompatActivity implements Handler.Cal
             Request.get(h, GET_USERS, url).start();
 
         } else {
-            Uri.Builder builder = new Uri.Builder();
 
             builder.scheme("https")
                     .authority("dogetoing.herokuapp.com")

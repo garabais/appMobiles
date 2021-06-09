@@ -1,6 +1,7 @@
 package com.example.proyectomobiles;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.Follow
     private String uid;
     private String otherUid;
     private int unfollowIndex;
+    private boolean followers;
 
     private static final int DEL_FOLLOW = 1;
 
@@ -32,6 +34,11 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.Follow
     public FollowerAdapter(List<UserData> data, String uid) {
         this.data = data;
         this.uid = uid;
+        this.followers = false;
+    }
+
+    public void setFollowers(boolean f) {
+        this.followers = f;
     }
 
     public void setUnfollowIndex(int unfollowIndex) {
@@ -50,27 +57,54 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.Follow
     public void onBindViewHolder(@NonNull @NotNull FollowerAdapter.FollowerViewHolder holder, int position) {
         holder.name.setText(data.get(position).getName());
 
+        if (followers) {
+            holder.uButton.setText("Follow");
+        } else {
+            holder.uButton.setText("Unfollow");
+        }
+
         holder.uButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                JSONObject d = new JSONObject();
-                try {
-                    d.put("followUid", data.get(position).getUid());
-                    otherUid = data.get(position).getUid();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (followers) {
+                    JSONObject d = new JSONObject();
+                    Log.d("RESPONCETEST", "onClick: " + data.get(position).getName());
+                    Log.d("RESPONCETEST", "onClick: " + data.get(position).getUid());
+
+                    try {
+                        d.put("followUid", data.get(position).getUid());
+                        Request.post(null, 0, String.format("https://dogetoing.herokuapp.com/users/%s/follows", uid) , d).start();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+//                    Toast.makeText(view.getContext(), String.format("Following %s", data.get(position).getName()), Toast.LENGTH_SHORT).show();
+//
+//                    data.remove(position);
+//
+//                    notifyDataSetChanged();
+                } else {
+                    JSONObject d = new JSONObject();
+                    try {
+                        d.put("followUid", data.get(position).getUid());
+                        otherUid = data.get(position).getUid();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    unFollowUrl = String.format(UNFOLLOW_URL_TEMPLATE, uid, otherUid);
+
+                    Request.delete(null, 0, unFollowUrl ).start();
+
+                    Toast.makeText(view.getContext(), String.format("Unfollowing %s", data.get(position).getName()), Toast.LENGTH_SHORT).show();
+
+                    data.remove(position);
+
+                    notifyDataSetChanged();
                 }
 
-                unFollowUrl = String.format(UNFOLLOW_URL_TEMPLATE, uid, otherUid);
-
-                Request.delete(null, 0, unFollowUrl ).start();
-
-                Toast.makeText(view.getContext(), String.format("Unfollowing %s", data.get(position).getName()), Toast.LENGTH_SHORT).show();
-
-                data.remove(position);
-
-                notifyDataSetChanged();
             }
         });
 
