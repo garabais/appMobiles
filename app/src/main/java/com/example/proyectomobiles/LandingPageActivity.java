@@ -37,8 +37,10 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
     private static final int GET_USERNAME = 2;
     private static final int GET_FOLLOWING = 3;
     private static final int GET_RANDOM_FOLLOWING_NAME = 4;
-    private static final int GET_RANDOM_REVIEW = 5;
-    private static final int CHANGE_USERNAME = 6;
+    private static final int GET_RANDOM_MOVIE = 5;
+    private static final int GET_RANDOM_GAME = 6;
+    private static final int GET_RANDOM_SHOW = 7;
+    private static final int CHANGE_USERNAME = 8;
     private FirebaseAuth mAuth;
     private EditText userTV;
 
@@ -53,6 +55,8 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
     private RecyclerView feedRecycler;
     private ArrayList<JSONObject> feedData;
     private FollowingDataAdapter feedAdapter;
+
+    private boolean isAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,13 +76,15 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
         feedRecycler.setAdapter(feedAdapter);
         feedRecycler.setLayoutManager(new LinearLayoutManager(this));
 
+        isAdmin = false;
+
     }
 
     public void loadFollowingData(){
         String followingURL = "https://dogetoing.herokuapp.com/users/" + uid + "/feed/";
-        Request.get(this.handler, GET_RANDOM_REVIEW, followingURL + "movies").start();
-        Request.get(this.handler, GET_RANDOM_REVIEW, followingURL + "games").start();
-        Request.get(this.handler, GET_RANDOM_REVIEW, followingURL + "shows").start();
+        Request.get(this.handler, GET_RANDOM_MOVIE, followingURL + "movies").start();
+        Request.get(this.handler, GET_RANDOM_GAME, followingURL + "games").start();
+        Request.get(this.handler, GET_RANDOM_SHOW, followingURL + "shows").start();
         Log.d("printURL", followingURL + "movies");
     }
 
@@ -101,10 +107,10 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
         startActivityForResult(i, ADD_ELEMENT);
     }
 
-    public void calificarElemento(View v){
-        Intent i = new Intent(this, ElementNewActivity.class);
+    public void searchElement(View v){
+        Intent i = new Intent(this, MediaSearchActivity.class);
         i.putExtra("UID", uid);
-        startActivityForResult(i, ADD_ELEMENT);
+        startActivity(i);
     }
 
 
@@ -125,6 +131,7 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
 
            //userTV.setText(username);
            uid = user.getUid();
+           feedAdapter.setUid(uid);
 
            String usernameURL = "https://dogetoing.herokuapp.com/users/" + uid;
 
@@ -143,9 +150,13 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
     }
 
     public void personalColletion(View v) {
-        Intent i = new Intent(this, CollectionUser.class);
+//        Intent i = new Intent(this, CollectionUser.class);
+//        i.putExtra("UID", uid);
+//
+//        startActivity(i);
+        Intent i = new Intent(this, MediaSearchActivity.class);
         i.putExtra("UID", uid);
-
+        i.putExtra("USER", true);
         startActivity(i);
     }
 
@@ -154,6 +165,15 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
         i.putExtra("UID", uid);
 
         startActivity(i);
+    }
+
+    public void adminPanel(View v) {
+        if (isAdmin) {
+            Intent i = new Intent(this, AdminPanelActivity.class);
+            i.putExtra("UID", uid);
+
+            startActivity(i);
+        }
     }
 
     @Override
@@ -168,6 +188,7 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
                     JSONObject jsonUser = new JSONObject(r.data);
                     Log.wtf("NAME",r.data);
                     userTV.setText(jsonUser.getString("name"));
+                    isAdmin = jsonUser.getBoolean("is_admin");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -175,13 +196,21 @@ public class LandingPageActivity extends AppCompatActivity implements Handler.Ca
                 Toast.makeText(getApplicationContext(),"Error al obtener el username",Toast.LENGTH_SHORT).show();
             }
 
-        }else if(r.requestCode == GET_RANDOM_REVIEW){
+        }else if(r.requestCode == GET_RANDOM_GAME || r.requestCode == GET_RANDOM_MOVIE || r.requestCode == GET_RANDOM_SHOW){
             if(r.responseCode == HttpURLConnection.HTTP_OK){
 //                Log.d("dataNAT", r.data);
                 try {
                     JSONArray reviews = new JSONArray(r.data);
                     for(int i = 0; i < reviews.length(); i ++){
-                        feedData.add(reviews.getJSONObject(i));
+                        JSONObject o = reviews.getJSONObject(i);
+                        if (r.requestCode == GET_RANDOM_MOVIE) {
+                            o.put("type","movies");
+                        } else if(r.requestCode == GET_RANDOM_GAME){
+                            o.put("type","games");
+                        } else {
+                            o.put("type","shows");
+                        }
+                        feedData.add(o);
                     }
                     feedAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {

@@ -1,5 +1,6 @@
 package com.example.proyectomobiles;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +19,14 @@ import java.util.ArrayList;
 public class FollowingDataAdapter extends RecyclerView.Adapter<FollowingDataAdapter.FollowingViewHolder> {
 
     private ArrayList<JSONObject> fdata;
+    private String uid;
 
     public FollowingDataAdapter(ArrayList<JSONObject> fdata){
         this.fdata = fdata;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     @NonNull
@@ -40,6 +46,39 @@ public class FollowingDataAdapter extends RecyclerView.Adapter<FollowingDataAdap
             holder.elementname.setText(fdata.get(position).getString("name"));
             holder.score.setText(fdata.get(position).getString("score"));
 
+            holder.elementname.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(view.getContext(), InfoElementActivity.class);
+
+                    try {
+                        i.putExtra("userID", uid);
+                        i.putExtra("elementType", fdata.get(position).getString("type"));
+                        i.putExtra("elementID", fdata.get(position).getInt("id"));
+                        view.getContext().startActivity(i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
+            holder.username.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    try {
+                        Intent i = new Intent(view.getContext(), UserActivity.class);
+                        i.putExtra("userID", uid);
+                        i.putExtra("otherUserID", fdata.get(position).getString("followingUid"));
+                        view.getContext().startActivity(i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            });
             Log.d("fdata", fdata.get(position).getString("followingName"));
         } catch (JSONException e){
             e.printStackTrace();

@@ -10,19 +10,12 @@
 
 
     <TextView
-        android:id="@+id/mediaName"
+        android:id="@+id/elementText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight=".70"
-        android:textColor="#FFFFFF" />
-
-    <TextView
-        android:id="@+id/mediaScore"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight=".30"
-        android:textAlignment="textEnd"
-        android:textColor="#FCFCFC" />
+        android:layout_weight=".1"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp" />
 
 
 </LinearLayout>
