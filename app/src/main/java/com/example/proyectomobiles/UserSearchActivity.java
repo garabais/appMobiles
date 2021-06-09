@@ -63,7 +63,8 @@ public class UserSearchActivity extends AppCompatActivity implements Handler.Cal
             Uri.Builder builder = new Uri.Builder();
 
             builder.scheme("https")
-                    .authority("dogetoing.herokuapp.com").appendPath("users")
+                    .authority("dogetoing.herokuapp.com")
+                    .appendPath("users")
                     .appendQueryParameter("name", name)
                     .appendQueryParameter("nf", userUid);
 
@@ -72,7 +73,17 @@ public class UserSearchActivity extends AppCompatActivity implements Handler.Cal
             Request.get(h, GET_USERS, url).start();
 
         } else {
-            Toast.makeText(this, "Please enter a name to search", Toast.LENGTH_SHORT).show();
+            Uri.Builder builder = new Uri.Builder();
+
+            builder.scheme("https")
+                    .authority("dogetoing.herokuapp.com")
+                    .appendPath("users")
+                    .appendQueryParameter("nf", userUid);
+
+            String url = builder.build().toString();
+
+            Request.get(h, GET_USERS, url).start();
+            //Toast.makeText(this, "Please enter a name to search", Toast.LENGTH_SHORT).show();
         }
     }
 
